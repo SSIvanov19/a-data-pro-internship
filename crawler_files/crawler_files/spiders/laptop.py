@@ -11,7 +11,7 @@ class LaptopSpider(scrapy.Spider):
     def extractInfo(self, response):
         item = ProductItem()
         item = {
-                "productName": response.xpath("""/html/body/div[1]/article/form[2]/div/header/h1/text()""").get().replace("\n",""),
+                "productName": response.xpath("""/html/body/div[1]/article/form[2]/div/header/h1/text()""").get().replace("\n","").replace('"',""),
                 "productStore": "Laptop.bg",
                 "isProductAvailable": True,
                 "productPrice": response.xpath("""/html/body/div[1]/article/form[2]/div/section/div[1]/div[1]/div[1]/span[2]/span[1]/text()""").get()

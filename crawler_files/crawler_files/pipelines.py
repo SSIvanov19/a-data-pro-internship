@@ -19,14 +19,35 @@ class CrawlerFilesPipeline:
         self.cursor = self.connection.cursor()
         self.cursor.execute(
             """
-            CREATE TABLE IF NOT EXISTS Data
+            CREATE TABLE IF NOT EXISTS Products
             (
-                id INTEGER PRIMARY KEY, 
-                productName VARCHAR(255),
-                productStore VARCHAR(255), 
-                isProductAvailable INTEGER, 
-                productPrice INTEGER,
-                UNIQUE (productName) ON CONFLICT IGNORE
+                Id INTEGER PRIMARY KEY, 
+                ProductName VARCHAR(255),
+                UNIQUE (ProductName) ON CONFLICT IGNORE
+            )
+            """
+        )
+
+        self.cursor.execute(
+            """
+            CREATE TABLE IF NOT EXISTS Stores
+            (
+                Id INTEGER PRIMARY KEY, 
+                StoreName VARCHAR(255),
+                UNIQUE (StoreName) ON CONFLICT IGNORE
+            )
+            """
+        )
+
+        self.cursor.execute(
+            """
+            CREATE TABLE IF NOT EXISTS PricesForEachStore
+            (
+                ProductId INTEGER, 
+                StoreId INTEGER,
+                IsAvailable INTEGER ALLOW NULL,
+                Price REAL,
+                UNIQUE (ProductId, StoreId) ON CONFLICT IGNORE
             )
             """
         )
@@ -38,10 +59,30 @@ class CrawlerFilesPipeline:
         in the constructor.
         """
 
+        # self.cursor.execute(
+        #     """INSERT INTO Data (productName, productStore, isProductAvailable, productPrice) values (?, ?, ?, ?)""",
+        #     (item["productName"], item["productStore"], item["isProductAvailable"], item["productPrice"]),
+        # )
+
         self.cursor.execute(
-            """INSERT INTO Data (productName, productStore, isProductAvailable, productPrice) values (?, ?, ?, ?)""",
-            (item["productName"], item["productStore"], item["isProductAvailable"], item["productPrice"]),
+            """INSERT INTO Products (ProductName) values (?)""",
+            (item["productName"],),
         )
+
+        self.cursor.execute(
+            """INSERT INTO Stores (StoreName) values (?)""",
+            (item["productStore"],),
+        )
+
+        self.cursor.execute(
+            """INSERT INTO PricesForEachStore (ProductId, StoreId, IsAvailable, Price) 
+                SELECT
+                (SELECT Id FROM Products WHERE ProductName = "{}") as ProductId,
+                (SELECT Id FROM Stores WHERE StoreName = "{}") as StoreId,
+                {}, {}"""
+                .format(item["productName"], item["productStore"], item["isProductAvailable"], item["productPrice"]),
+            )
+        
         self.connection.commit()
         logging.debug("Item stored {}".format(item["productName"]))
         return item
