@@ -7,6 +7,8 @@ class LaptopSpider(scrapy.Spider):
     name = 'laptop'
     allowed_domains = ['laptop.bg']
     start_urls = ['https://laptop.bg/search?q=' + productToSearch]
+    href = []
+    i = 0
 
     def extractInfo(self, response):
         item = ProductItem()
@@ -18,8 +20,13 @@ class LaptopSpider(scrapy.Spider):
         }
         
         yield item
+        self.i = self.i + 1
+        if (self.i == self.href.__len__()):
+            return
+        yield scrapy.Request(self.href[self.i], callback=self.extractInfo)
 
     def parse(self, response):
         logging.getLogger('scrapy').propagate = False
-        for href in response.xpath("""//*[@class="products"]/li/article/a/@href""").extract():
-            yield scrapy.Request(href, callback=self.extractInfo)
+
+        self.href = response.xpath("""//*[@class="products"]/li/article/a/@href""").extract()
+        yield scrapy.Request(self.href[self.i], callback=self.extractInfo)
