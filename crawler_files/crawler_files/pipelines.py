@@ -7,7 +7,6 @@
 import logging
 import sqlite3
 
-
 class CrawlerFilesPipeline:
     def __init__(self):
         """
@@ -22,8 +21,9 @@ class CrawlerFilesPipeline:
             CREATE TABLE IF NOT EXISTS Products
             (
                 Id INTEGER PRIMARY KEY, 
+                ProductNumber VARCHAR(255),
                 ProductName VARCHAR(255),
-                UNIQUE (ProductName) ON CONFLICT IGNORE
+                UNIQUE (ProductNumber) ON CONFLICT IGNORE
             )
             """
         )
@@ -59,14 +59,9 @@ class CrawlerFilesPipeline:
         in the constructor.
         """
 
-        # self.cursor.execute(
-        #     """INSERT INTO Data (productName, productStore, isProductAvailable, productPrice) values (?, ?, ?, ?)""",
-        #     (item["productName"], item["productStore"], item["isProductAvailable"], item["productPrice"]),
-        # )
-
         self.cursor.execute(
-            """INSERT INTO Products (ProductName) values (?)""",
-            (item["productName"],),
+            """INSERT INTO Products (ProductName, ProductNumber) values (?, ?)""",
+            (item["productName"], item["productNumber"]),
         )
 
         self.cursor.execute(
@@ -77,10 +72,10 @@ class CrawlerFilesPipeline:
         self.cursor.execute(
             """INSERT INTO PricesForEachStore (ProductId, StoreId, IsAvailable, Price) 
                 SELECT
-                (SELECT Id FROM Products WHERE ProductName = "{}") as ProductId,
+                (SELECT Id FROM Products WHERE ProductNumber = "{}") as ProductId,
                 (SELECT Id FROM Stores WHERE StoreName = "{}") as StoreId,
                 {}, {}"""
-                .format(item["productName"], item["productStore"], item["isProductAvailable"], item["productPrice"]),
+                .format(item["productNumber"], item["productStore"], item["isProductAvailable"], item["productPrice"]),
             )
         
         self.connection.commit()
