@@ -69,14 +69,16 @@ class CrawlerFilesPipeline:
             (item["productStore"],),
         )
 
+        param = (item["isProductAvailable"], item["productPrice"])
+
         self.cursor.execute(
             """INSERT INTO PricesForEachStore (ProductId, StoreId, IsAvailable, Price) 
                 SELECT
                 (SELECT Id FROM Products WHERE ProductNumber = "{}") as ProductId,
                 (SELECT Id FROM Stores WHERE StoreName = "{}") as StoreId,
-                {}, {}"""
-                .format(item["productNumber"], item["productStore"], item["isProductAvailable"], item["productPrice"]),
-            )
+                ?, ?"""
+                .format(item["productNumber"], item["productStore"]), param
+        )
         
         self.connection.commit()
         logging.debug("Item stored {}".format(item["productName"]))

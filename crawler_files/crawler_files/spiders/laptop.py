@@ -18,7 +18,7 @@ class LaptopSpider(scrapy.Spider):
     #Method to extract data about a product
     #from the website catalogue
     def extractInfo(self, response):
-        #Store the data in a dictionary
+        #Store the data in a ProductItem class
         item = ProductItem()
 
         #Store the data of the product
