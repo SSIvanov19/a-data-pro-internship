@@ -21,8 +21,8 @@ class CrawlerFilesPipeline:
             CREATE TABLE IF NOT EXISTS Products
             (
                 Id INTEGER PRIMARY KEY, 
-                ProductNumber VARCHAR(255),
-                ProductName VARCHAR(255),
+                ProductNumber VARCHAR(255) NOT NULL ON CONFLICT IGNORE,
+                ProductName VARCHAR(255) NOT NULL,
                 UNIQUE (ProductNumber) ON CONFLICT IGNORE
             )
             """
@@ -33,7 +33,7 @@ class CrawlerFilesPipeline:
             CREATE TABLE IF NOT EXISTS Stores
             (
                 Id INTEGER PRIMARY KEY, 
-                StoreName VARCHAR(255),
+                StoreName VARCHAR(255) NOT NULL,
                 UNIQUE (StoreName) ON CONFLICT IGNORE
             )
             """
@@ -43,10 +43,10 @@ class CrawlerFilesPipeline:
             """
             CREATE TABLE IF NOT EXISTS PricesForEachStore
             (
-                ProductId INTEGER, 
-                StoreId INTEGER,
-                IsAvailable INTEGER ALLOW NULL,
-                Price REAL,
+                ProductId INTEGER NOT NULL, 
+                StoreId INTEGER NOT NULL,
+                IsAvailable INTEGER NOT NULL,
+                Price REAL ALLOW NULL,
                 UNIQUE (ProductId, StoreId) ON CONFLICT IGNORE
             )
             """
@@ -60,19 +60,19 @@ class CrawlerFilesPipeline:
         """
 
         self.cursor.execute(
-            """INSERT INTO Products (ProductName, ProductNumber) values (?, ?)""",
+            """INSERT OR IGNORE INTO Products (ProductName, ProductNumber) values (?, ?)""",
             (item["productName"], item["productNumber"]),
         )
 
         self.cursor.execute(
-            """INSERT INTO Stores (StoreName) values (?)""",
+            """INSERT OR IGNORE INTO Stores (StoreName) values (?)""",
             (item["productStore"],),
         )
 
         param = (item["isProductAvailable"], item["productPrice"])
 
         self.cursor.execute(
-            """INSERT INTO PricesForEachStore (ProductId, StoreId, IsAvailable, Price) 
+            """INSERT OR IGNORE INTO PricesForEachStore (ProductId, StoreId, IsAvailable, Price) 
                 SELECT
                 (SELECT Id FROM Products WHERE ProductNumber = "{}") as ProductId,
                 (SELECT Id FROM Stores WHERE StoreName = "{}") as StoreId,
