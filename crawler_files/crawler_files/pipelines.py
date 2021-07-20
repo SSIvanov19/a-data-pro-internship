@@ -42,6 +42,18 @@ class CrawlerFilesPipeline:
 
         self.cursor.execute(
             """
+            CREATE TABLE IF NOT EXISTS LinkForEachProductInStore
+            (
+                ProductId INTEGER NOT NULL, 
+                StoreId INTEGER NOT NULL,
+                Link VARCHAR(255) NOT NULL,
+                UNIQUE (ProductId, StoreId) ON CONFLICT IGNORE
+            )
+            """
+        )
+
+        self.cursor.execute(
+            """
             CREATE TABLE IF NOT EXISTS PricesForEachStore
             (
                 ProductId INTEGER NOT NULL, 
@@ -60,6 +72,10 @@ class CrawlerFilesPipeline:
         in the constructor.
         """
 
+        if  item["productNumber"] == None:
+            logging.warning("Product Number is None")
+            return item
+
         self.cursor.execute(
             """INSERT OR IGNORE INTO Products (ProductName, ProductNumber, ImgLink) values (?, ?, ?)""",
             (item["productName"], item["productNumber"], item["imgForProductLink"]),
@@ -68,6 +84,15 @@ class CrawlerFilesPipeline:
         self.cursor.execute(
             """INSERT OR IGNORE INTO Stores (StoreName) values (?)""",
             (item["productStore"],),
+        )
+
+        self.cursor.execute(
+            """INSERT OR IGNORE INTO LinkForEachProductInStore (ProductId, StoreId, Link) 
+                SELECT
+                (SELECT Id FROM Products WHERE ProductNumber = "{}") as ProductId,
+                (SELECT Id FROM Stores WHERE StoreName = "{}") as StoreId,
+                ?"""
+                .format(item["productNumber"], item["productStore"]), (item["urlLink"],)
         )
 
         param = (item["isProductAvailable"], item["productPrice"])

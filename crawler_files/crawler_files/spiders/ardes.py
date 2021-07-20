@@ -29,6 +29,7 @@ class ArdesSpider(scrapy.Spider):
             "productNumber": response.xpath("""//*[@id="technical_parameters"]/div[1]/div/span[2]/span/text()""").get(),
             "productStore": "ardes",
             "imgForProductLink": "https://ardes.bg" + response.xpath("""//*[@id="bigImage"]/@src""").get(),
+            "urlLink": response.url,
             "isProductAvailable": True,
             "productPrice": float(response.xpath("""//*[@id="price-tag"]/text()""").get() + response.xpath("""//*[@id="buying-info"]/div[1]/span[2]/sup/text()""").get())
         }

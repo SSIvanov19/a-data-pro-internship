@@ -26,6 +26,7 @@ class JarcomputersSpider(scrapy.Spider):
                                 .get()
                                 .split(',')[0],
             "productNumber": response.xpath("""/html/body/div[3]/div[3]/div[2]/div[1]/div[2]/div[2]/div[2]/ul[1]/li[4]/b/text()""").get(),
+            "urlLink": response.url,
             "productStore": "jarcomputers",
             "imgForProductLink": response.xpath("""//*[@id="main_image"]/a/@href""").get(),
         }   

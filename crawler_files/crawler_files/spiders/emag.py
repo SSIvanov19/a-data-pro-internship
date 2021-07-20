@@ -32,6 +32,7 @@ class EmagSpider(scrapy.Spider):
                                 .split(' ')[3], 
                 "productStore": "emag.bg",
                 "imgForProductLink": response.xpath("""//*[contains(@class, 'product-gallery-image')]/@href""").get(),
+                "urlLink": response.url,
                 "isProductAvailable": True,
                 "productPrice": float(response.xpath("""//p[contains(@class, 'product-new-price')]/text()""")
                                 .get()
