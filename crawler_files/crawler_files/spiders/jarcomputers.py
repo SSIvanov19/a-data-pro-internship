@@ -25,7 +25,7 @@ class JarcomputersSpider(scrapy.Spider):
             "productName": response.xpath("""/html/body/div[3]/div[3]/div[2]/div[1]/div[2]/div[2]/div[1]/h1/text()""")
                                 .get()
                                 .split(',')[0],
-            "productNumber": response.xpath("""/html/body/div[3]/div[3]/div[2]/div[1]/div[2]/div[2]/div[2]/ul[1]/li[5]/b/text()""").get(),
+            "productNumber": response.xpath("""/html/body/div[3]/div[3]/div[2]/div[1]/div[2]/div[2]/div[2]/ul[1]/li[4]/b/text()""").get(),
             "productStore": "jarcomputers",	
         }   
 
@@ -37,7 +37,7 @@ class JarcomputersSpider(scrapy.Spider):
             item['productPrice'] = None
         else:
             item["isProductAvailable"] = True
-            item['productPrice'] = float(response.xpath("""//*[@id="price_label_id"]/text()""").get())
+            item['productPrice'] = float(response.xpath("""//*[@class="price"]/text()""").get() + response.xpath("""//*[@class="price2"]/text()""").get())
 
         #Send the data to the pipeline
         yield item
@@ -53,7 +53,7 @@ class JarcomputersSpider(scrapy.Spider):
     #Method which finds the hrefs for the products
     def parse(self, response):
         #Stop the scrapy from sending logs
-        logging.getLogger('scrapy').propagate = False
+        #logging.getLogger('scrapy').propagate = False
 
         #Find all the hrefs
         self.href = response.xpath("""/html/body/div[3]/div[3]/div[2]/div/div[4]/ol/li/div[2]/p/span[2]/a/@href""").extract()

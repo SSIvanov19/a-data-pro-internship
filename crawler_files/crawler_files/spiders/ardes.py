@@ -47,7 +47,7 @@ class ArdesSpider(scrapy.Spider):
     #Method which finds the hrefs for the products
     def parse(self, response):
         #Stop the scrapy from sending logs
-        logging.getLogger('scrapy').propagate = False
+        #logging.getLogger('scrapy').propagate = False
 
         #Find all the hrefs
         self.href = response.xpath("""//*[@id="ajax_content"]/div[2]/div[2]/div/div/div/div[1]/a/@href""").extract()
