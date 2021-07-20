@@ -23,6 +23,7 @@ class CrawlerFilesPipeline:
                 Id INTEGER PRIMARY KEY, 
                 ProductNumber VARCHAR(255) NOT NULL ON CONFLICT IGNORE,
                 ProductName VARCHAR(255) NOT NULL,
+                ImgLink VARCHAR(255) NOT NULL,
                 UNIQUE (ProductNumber) ON CONFLICT IGNORE
             )
             """
@@ -60,8 +61,8 @@ class CrawlerFilesPipeline:
         """
 
         self.cursor.execute(
-            """INSERT OR IGNORE INTO Products (ProductName, ProductNumber) values (?, ?)""",
-            (item["productName"], item["productNumber"]),
+            """INSERT OR IGNORE INTO Products (ProductName, ProductNumber, ImgLink) values (?, ?, ?)""",
+            (item["productName"], item["productNumber"], item["imgForProductLink"]),
         )
 
         self.cursor.execute(

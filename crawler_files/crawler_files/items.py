@@ -11,5 +11,6 @@ class ProductItem(scrapy.Item):
     productName = scrapy.Field()
     productNumber = scrapy.Field()
     productStore = scrapy.Field()
+    imgForProductLink = scrapy.Field()
     isProductAvailable = scrapy.Field()
     productPrice = scrapy.Field()

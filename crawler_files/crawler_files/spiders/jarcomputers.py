@@ -26,7 +26,8 @@ class JarcomputersSpider(scrapy.Spider):
                                 .get()
                                 .split(',')[0],
             "productNumber": response.xpath("""/html/body/div[3]/div[3]/div[2]/div[1]/div[2]/div[2]/div[2]/ul[1]/li[4]/b/text()""").get(),
-            "productStore": "jarcomputers",	
+            "productStore": "jarcomputers",
+            "imgForProductLink": response.xpath("""//*[@id="main_image"]/a/@href""").get(),
         }   
 
         isProductAvailable =response.xpath("""/html/body/div[3]/div[3]/div[2]/div[1]/div[2]/div[2]/div[2]/ul[1]/li[6]/span/text()""").get()
@@ -53,7 +54,7 @@ class JarcomputersSpider(scrapy.Spider):
     #Method which finds the hrefs for the products
     def parse(self, response):
         #Stop the scrapy from sending logs
-        #logging.getLogger('scrapy').propagate = False
+        logging.getLogger('scrapy').propagate = False
 
         #Find all the hrefs
         self.href = response.xpath("""/html/body/div[3]/div[3]/div[2]/div/div[4]/ol/li/div[2]/p/span[2]/a/@href""").extract()

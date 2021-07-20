@@ -28,9 +28,10 @@ class ArdesSpider(scrapy.Spider):
                                 .strip(),
             "productNumber": response.xpath("""//*[@id="technical_parameters"]/div[1]/div/span[2]/span/text()""").get(),
             "productStore": "ardes",
+            "imgForProductLink": "https://ardes.bg" + response.xpath("""//*[@id="bigImage"]/@src""").get(),
             "isProductAvailable": True,
             "productPrice": float(response.xpath("""//*[@id="price-tag"]/text()""").get() + response.xpath("""//*[@id="buying-info"]/div[1]/span[2]/sup/text()""").get())
-        }   
+        }
 
         #Send the data to the pipeline
         yield item
@@ -47,7 +48,7 @@ class ArdesSpider(scrapy.Spider):
     #Method which finds the hrefs for the products
     def parse(self, response):
         #Stop the scrapy from sending logs
-        #logging.getLogger('scrapy').propagate = False
+        logging.getLogger('scrapy').propagate = False
 
         #Find all the hrefs
         self.href = response.xpath("""//*[@id="ajax_content"]/div[2]/div[2]/div/div/div/div[1]/a/@href""").extract()
