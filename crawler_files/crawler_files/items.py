@@ -8,8 +8,8 @@ import scrapy
 
 class ProductItem(scrapy.Item):
     # define the fields for your item here like:
-    productName = scrapy.Field()
     productNumber = scrapy.Field()
+    productName = scrapy.Field()
     productStore = scrapy.Field()
     imgForProductLink = scrapy.Field()
     urlLink = scrapy.Field()

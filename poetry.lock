@@ -28,6 +28,18 @@ six = "*"
 visualize = ["graphviz (>0.5.1)", "Twisted (>=16.1.1)"]
 
 [[package]]
+name = "autopep8"
+version = "1.5.7"
+description = "A tool that automatically formats Python code to conform to the PEP 8 style guide"
+category = "dev"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+pycodestyle = ">=2.7.0"
+toml = "*"
+
+[[package]]
 name = "cffi"
 version = "1.14.6"
 description = "Foreign Function Interface for Python calling C code."
@@ -228,6 +240,14 @@ python-versions = "*"
 pyasn1 = ">=0.4.6,<0.5.0"
 
 [[package]]
+name = "pycodestyle"
+version = "2.7.0"
+description = "Python style guide checker"
+category = "dev"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+
+[[package]]
 name = "pycparser"
 version = "2.20"
 description = "C parser in Python"
@@ -239,6 +259,14 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 name = "pydispatcher"
 version = "2.0.5"
 description = "Multi-producer-multi-consumer signal dispatching mechanism"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
+name = "pyodbc"
+version = "4.0.31"
+description = "DB API Module for ODBC"
 category = "main"
 optional = false
 python-versions = "*"
@@ -266,6 +294,17 @@ description = "Multi-producer-multi-consumer signal dispatching mechanism"
 category = "main"
 optional = false
 python-versions = "*"
+
+[[package]]
+name = "python-dotenv"
+version = "0.18.0"
+description = "Read key-value pairs from a .env file and set them as environment variables"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.extras]
+cli = ["click (>=5.0)"]
 
 [[package]]
 name = "queuelib"
@@ -332,6 +371,14 @@ description = "Python 2 and 3 compatibility utilities"
 category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
+
+[[package]]
+name = "toml"
+version = "0.10.2"
+description = "Python Library for Tom's Obvious, Minimal Language"
+category = "dev"
+optional = false
+python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
 
 [[package]]
 name = "twisted"
@@ -401,7 +448,7 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "4bc3ee6b6b70c42abf4b82855cb6d7193a612e73bd7ea8fe7b779c6fe23f130f"
+content-hash = "47060f7dddb75b2d7e7d633447d75ac1a52527c67a021e110d247fb2e4ba75dd"
 
 [metadata.files]
 attrs = [
@@ -411,6 +458,10 @@ attrs = [
 automat = [
     {file = "Automat-20.2.0-py2.py3-none-any.whl", hash = "sha256:b6feb6455337df834f6c9962d6ccf771515b7d939bca142b29c20c2376bc6111"},
     {file = "Automat-20.2.0.tar.gz", hash = "sha256:7979803c74610e11ef0c0d68a2942b152df52da55336e0c9d58daf1831cbdf33"},
+]
+autopep8 = [
+    {file = "autopep8-1.5.7-py2.py3-none-any.whl", hash = "sha256:aa213493c30dcdac99537249ee65b24af0b2c29f2e83cd8b3f68760441ed0db9"},
+    {file = "autopep8-1.5.7.tar.gz", hash = "sha256:276ced7e9e3cb22e5d7c14748384a5cf5d9002257c0ed50c0e075b68011bb6d0"},
 ]
 cffi = [
     {file = "cffi-1.14.6-cp27-cp27m-macosx_10_9_x86_64.whl", hash = "sha256:22b9c3c320171c108e903d61a3723b51e37aaa8c81255b5e7ce102775bd01e2c"},
@@ -606,6 +657,10 @@ pyasn1-modules = [
     {file = "pyasn1_modules-0.2.8-py3.6.egg", hash = "sha256:cbac4bc38d117f2a49aeedec4407d23e8866ea4ac27ff2cf7fb3e5b570df19e0"},
     {file = "pyasn1_modules-0.2.8-py3.7.egg", hash = "sha256:c29a5e5cc7a3f05926aff34e097e84f8589cd790ce0ed41b67aed6857b26aafd"},
 ]
+pycodestyle = [
+    {file = "pycodestyle-2.7.0-py2.py3-none-any.whl", hash = "sha256:514f76d918fcc0b55c6680472f0a37970994e07bbb80725808c17089be302068"},
+    {file = "pycodestyle-2.7.0.tar.gz", hash = "sha256:c389c1d06bf7904078ca03399a4816f974a1d590090fecea0c63ec26ebaf1cef"},
+]
 pycparser = [
     {file = "pycparser-2.20-py2.py3-none-any.whl", hash = "sha256:7582ad22678f0fcd81102833f60ef8d0e57288b6b5fb00323d101be910e35705"},
     {file = "pycparser-2.20.tar.gz", hash = "sha256:2d475327684562c3a96cc71adf7dc8c4f0565175cf86b6d7a404ff4c771f15f0"},
@@ -614,12 +669,31 @@ pydispatcher = [
     {file = "PyDispatcher-2.0.5.tar.gz", hash = "sha256:5570069e1b1769af1fe481de6dd1d3a388492acddd2cdad7a3bde145615d5caf"},
     {file = "PyDispatcher-2.0.5.zip", hash = "sha256:5be4a8be12805ef7d712dd9a93284fb8bc53f309867e573f653a72e5fd10e433"},
 ]
+pyodbc = [
+    {file = "pyodbc-4.0.31-cp27-cp27m-win32.whl", hash = "sha256:9dfed15c049c3862d3c00b9e407548339f2483b0044fe2d0941acfac5c3168fa"},
+    {file = "pyodbc-4.0.31-cp27-cp27m-win_amd64.whl", hash = "sha256:ef7081be80f72a55d67115743b4b5b549731a1eabac0ff77ed1bbb5317f46b49"},
+    {file = "pyodbc-4.0.31-cp36-cp36m-win32.whl", hash = "sha256:3b9f387de4b4ddb9a14cbc29bf2243e1852936a7bdaf008415766ddaa5bcb23a"},
+    {file = "pyodbc-4.0.31-cp36-cp36m-win_amd64.whl", hash = "sha256:30c7ee71e2361d19f6bdaba138a635e3b956501365c1e4f9492ce8ae25497fc7"},
+    {file = "pyodbc-4.0.31-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:9dd09ea1f8b0cbd0f9084cf71621fb0362fcf98677dccbf72ab7290b4e1f8290"},
+    {file = "pyodbc-4.0.31-cp37-cp37m-win32.whl", hash = "sha256:22a1b1f69fc0694ad5cccd0e59bd154c6a7a3f3520eca15c8cb6b6d2e9a61a29"},
+    {file = "pyodbc-4.0.31-cp37-cp37m-win_amd64.whl", hash = "sha256:b3dbc1fe79e563d3ada9dda8a7f9339823fc8b6286f6bac8caa2f5784b098dbf"},
+    {file = "pyodbc-4.0.31-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:7653763421de86a592a1f6e90795c123a8ab376f3c60479b93e60323600dc94b"},
+    {file = "pyodbc-4.0.31-cp38-cp38-win32.whl", hash = "sha256:ee71646c173db7d9672706a2ffab453731e3e71bd33ca77bba87ad0cbceb2a4d"},
+    {file = "pyodbc-4.0.31-cp38-cp38-win_amd64.whl", hash = "sha256:d35c39d5bae89a467be02e438e98dd665d9e764a631558a2ba7c3d4f9c1c0ba1"},
+    {file = "pyodbc-4.0.31-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:c26f13f68bb67358d06c8e451b7129ffd0f7bfd0b9862c25eb84231c06570969"},
+    {file = "pyodbc-4.0.31-cp39-cp39-win_amd64.whl", hash = "sha256:78d73b9c1fadcaca50d5ba76fcef08da866989cba5a3b347bbbeb809898c5db0"},
+    {file = "pyodbc-4.0.31.tar.gz", hash = "sha256:89256e79d23415887cacf0a821f9f94baa5d833080521d456687d5e88c40c226"},
+]
 pyopenssl = [
     {file = "pyOpenSSL-20.0.1-py2.py3-none-any.whl", hash = "sha256:818ae18e06922c066f777a33f1fca45786d85edfe71cd043de6379337a7f274b"},
     {file = "pyOpenSSL-20.0.1.tar.gz", hash = "sha256:4c231c759543ba02560fcd2480c48dcec4dae34c9da7d3747c508227e0624b51"},
 ]
 pypydispatcher = [
     {file = "PyPyDispatcher-2.1.2.tar.gz", hash = "sha256:b6bec5dfcff9d2535bca2b23c80eae367b1ac250a645106948d315fcfa9130f2"},
+]
+python-dotenv = [
+    {file = "python-dotenv-0.18.0.tar.gz", hash = "sha256:effaac3c1e58d89b3ccb4d04a40dc7ad6e0275fda25fd75ae9d323e2465e202d"},
+    {file = "python_dotenv-0.18.0-py2.py3-none-any.whl", hash = "sha256:dd8fe852847f4fbfadabf6183ddd4c824a9651f02d51714fa075c95561959c7d"},
 ]
 queuelib = [
     {file = "queuelib-1.6.1-py2.py3-none-any.whl", hash = "sha256:90ee30ebb0b57112606358b63c09a681bbb9a7dd1120af09c836b475504cea85"},
@@ -636,6 +710,10 @@ service-identity = [
 six = [
     {file = "six-1.16.0-py2.py3-none-any.whl", hash = "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"},
     {file = "six-1.16.0.tar.gz", hash = "sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"},
+]
+toml = [
+    {file = "toml-0.10.2-py2.py3-none-any.whl", hash = "sha256:806143ae5bfb6a3c6e736a764057db0e6a0e05e338b5630894a5f779cabb4f9b"},
+    {file = "toml-0.10.2.tar.gz", hash = "sha256:b3bda1d108d5dd99f4a20d24d9c348e91c4db7ab1b749200bded2f839ccbe68f"},
 ]
 twisted = [
     {file = "Twisted-21.2.0-py3-none-any.whl", hash = "sha256:aab38085ea6cda5b378b519a0ec99986874921ee8881318626b0a3414bb2631e"},

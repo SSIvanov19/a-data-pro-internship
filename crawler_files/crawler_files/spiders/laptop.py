@@ -1,7 +1,7 @@
 import scrapy
 from scrapy.exceptions import CloseSpider
 import logging
-from crawler_files.items import ProductItem 
+from items import ProductItem 
 
 #Class: LaptopSpider
 class LaptopSpider(scrapy.Spider):
