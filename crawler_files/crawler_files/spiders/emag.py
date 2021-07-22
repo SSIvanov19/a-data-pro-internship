@@ -17,6 +17,9 @@ class EmagSpider(scrapy.Spider):
     #Method to extract data about a product
     #from the website catalogue
     def extractInfo(self, response):
+        self.logger.info('Extracting data from {}'.format(response.url),
+                         extra={"tags": {"service": "crawler"}})
+
         #Store the data in a ProductItem class
         item = ProductItem()
 
@@ -48,16 +51,15 @@ class EmagSpider(scrapy.Spider):
         #If there are not more product, stop the crawl
         self.i = self.i + 1
         if (self.i == self.href.__len__()):
-            raise CloseSpider('Reached end of products')
+            self.logger.info('No more products found',
+                             extra={"tags": {"service": "crawler"}})
+            raise CloseSpider('Reached end of products on: emag.bg')
         
         #Crawl the next product
         yield scrapy.Request(self.href[self.i], callback=self.extractInfo)
 
     #Method which finds the hrefs for the products
     def parse(self, response):
-        #Stop the scrapy from sending logs
-        #logging.getLogger('scrapy').propagate = False
-
         #Store hrefs in a list
         self.href = response.xpath("""//*[@id="card_grid"]/div/div[2]/div/div[1]/a/@href""").extract()
 

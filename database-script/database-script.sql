@@ -1,6 +1,6 @@
 USE [master]
 GO
-/****** Object:  Database [ADataProInternship]    Script Date: 21/07/2021 16:24:25 ******/
+/****** Object:  Database [ADataProInternship]    Script Date: 22/07/2021 19:10:19 ******/
 CREATE DATABASE [ADataProInternship]
  CONTAINMENT = NONE
  ON  PRIMARY 
@@ -80,7 +80,7 @@ ALTER DATABASE [ADataProInternship] SET QUERY_STORE = OFF
 GO
 USE [ADataProInternship]
 GO
-/****** Object:  Table [dbo].[LinkForEachProductInStore]    Script Date: 21/07/2021 16:24:25 ******/
+/****** Object:  Table [dbo].[LinkForEachProductInStore]    Script Date: 22/07/2021 19:10:19 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -100,7 +100,7 @@ CREATE TABLE [dbo].[LinkForEachProductInStore](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[PricesForEachStore]    Script Date: 21/07/2021 16:24:25 ******/
+/****** Object:  Table [dbo].[PricesForEachStore]    Script Date: 22/07/2021 19:10:19 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -122,7 +122,7 @@ CREATE TABLE [dbo].[PricesForEachStore](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Products]    Script Date: 21/07/2021 16:24:25 ******/
+/****** Object:  Table [dbo].[Products]    Script Date: 22/07/2021 19:10:19 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -138,7 +138,7 @@ CREATE TABLE [dbo].[Products](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Stores]    Script Date: 21/07/2021 16:24:25 ******/
+/****** Object:  Table [dbo].[Stores]    Script Date: 22/07/2021 19:10:19 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -180,7 +180,7 @@ ON DELETE CASCADE
 GO
 ALTER TABLE [dbo].[PricesForEachStore] CHECK CONSTRAINT [FK_PriceForEachStore_Stores]
 GO
-/****** Object:  StoredProcedure [dbo].[AddProduct]    Script Date: 21/07/2021 16:24:25 ******/
+/****** Object:  StoredProcedure [dbo].[AddProduct]    Script Date: 22/07/2021 19:10:19 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -196,33 +196,29 @@ CREATE PROCEDURE [dbo].[AddProduct]
 
 AS
 
--- Checks if product pumber is taken
-IF EXISTS(SELECT ProductNumber FROM Products WHERE ProductNumber = @ProductNumber)
-BEGIN
-	SELECT 1 AS ReturnCode
-END
-
-ELSE
+-- Checks if product number is already taken
+IF NOT EXISTS(SELECT ProductNumber FROM Products WHERE ProductNumber = @ProductNumber)
 BEGIN
 	-- Insert into Products table
 	INSERT INTO Products (ProductNumber, ProductName, ImgLink)
 	VALUES(@ProductNumber, @ProductName, @ImgLink)
-
-	-- Checks if there is already a store with this name
-	IF NOT EXISTS(SELECT StoreName FROM Stores WHERE StoreName = @ProductStore)
-	BEGIN
-		INSERT INTO Stores (StoreName)
-		VALUES (@ProductStore)
-	END
-
-	INSERT INTO LinkForEachProductInStore (ProductId, StoreId, Link)
-	VALUES(IDENT_CURRENT('Products'), IDENT_CURRENT('Stores'), @UrlLink)
-
-	INSERT INTO PricesForEachStore (ProductId, StoreId, IsAvailable, Price)
-	VALUES(IDENT_CURRENT('Products'), IDENT_CURRENT('Stores'),@IsProductAvailable , @ProductPrice)
-
-	SELECT 0 AS ReturnCode
 END
+
+-- Checks if there is already a store with this name
+IF NOT EXISTS(SELECT StoreName FROM Stores WHERE StoreName = @ProductStore)
+BEGIN
+	-- Insert into Stores table
+	INSERT INTO Stores (StoreName)
+	VALUES (@ProductStore)
+END
+
+INSERT INTO LinkForEachProductInStore (ProductId, StoreId, Link)
+SELECT(SELECT Id FROM Products WHERE ProductNumber = @ProductNumber) as ProductId, (SELECT Id FROM Stores WHERE StoreName = @ProductStore) as StoreId, @UrlLink
+
+INSERT INTO PricesForEachStore (ProductId, StoreId, IsAvailable, Price)
+SELECT(SELECT Id FROM Products WHERE ProductNumber = @ProductNumber) as ProductId, (SELECT Id FROM Stores WHERE StoreName = @ProductStore) as StoreId, @IsProductAvailable, @ProductPrice
+
+SELECT 0 AS ReturnCode
 GO
 USE [master]
 GO

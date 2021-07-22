@@ -16,7 +16,10 @@ class JarcomputersSpider(scrapy.Spider):
 
     #Method to extract data about a product
     #from the website catalogue
-    def extractInfo(self, response):        
+    def extractInfo(self, response):
+        self.logger.info('Extracting data from {}'.format(response.url),
+                         extra={"tags": {"service": "crawler"}})
+
         #Store the data in a ProductItem class
         item = ProductItem()
 
@@ -47,6 +50,8 @@ class JarcomputersSpider(scrapy.Spider):
         #If there are not more product, stop the crawl
         self.i = self.i + 1
         if (self.i == self.href.__len__()):
+            self.logger.info('No more products found',
+                             extra={"tags": {"service": "crawler"}})
             raise CloseSpider('Reached end of products')
         
         #Crawl the next product
@@ -54,15 +59,12 @@ class JarcomputersSpider(scrapy.Spider):
         
     #Method which finds the hrefs for the products
     def parse(self, response):
-        #Stop the scrapy from sending logs
-        #logging.getLogger('scrapy').propagate = False
-
         #Find all the hrefs
         self.href = response.xpath("""/html/body/div[3]/div[3]/div[2]/div/div[4]/ol/li/div[2]/p/span[2]/a/@href""").extract()
 
         #If there aren't any products, stop the crawl
         if self.href == []:
-            raise CloseSpider('No products found')
+            raise CloseSpider('No products found on: jarcomputers.com')
 
         #Send requests to the hrefs and callback the method extractInfo
         yield scrapy.Request(self.href[self.i], callback=self.extractInfo)
