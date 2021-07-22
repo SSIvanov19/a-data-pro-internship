@@ -56,7 +56,7 @@ class EmagSpider(scrapy.Spider):
     #Method which finds the hrefs for the products
     def parse(self, response):
         #Stop the scrapy from sending logs
-        logging.getLogger('scrapy').propagate = False
+        #logging.getLogger('scrapy').propagate = False
 
         #Store hrefs in a list
         self.href = response.xpath("""//*[@id="card_grid"]/div/div[2]/div/div[1]/a/@href""").extract()
