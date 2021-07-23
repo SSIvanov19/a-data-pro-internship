@@ -27,7 +27,7 @@ class CrawlerFilesPipeline:
 
         # Try to connect to database
         try:
-            self.conn = pyodbc.connect('DRIVER={SQL Server};SERVER='+self.server+';DATABASE=' +
+            self.conn = pyodbc.connect('DRIVER={FreeTDS};SERVER='+self.server+';DATABASE=' +
                                        self.database+';User='+self.username+';Password='+self.password)
         except pyodbc.Error as err:
             self.logger.error(err,
