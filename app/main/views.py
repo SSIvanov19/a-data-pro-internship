@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.shortcuts import render, redirect 
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 
 from django.contrib import messages
 from .models import *
@@ -17,8 +17,8 @@ def home(response):
 def account(response):
     return render(response, "main/account.html", {})
 
-def crawler(response):
-    return render(response, "main/crawler.html", {})
+def scraper(response):
+    return render(response, "main/scraper.html", {})
 
 def registerPage(request):
 	if request.user.is_authenticated:
@@ -56,4 +56,5 @@ def loginPage(request):
 
 		context = {}
 		return render(request, 'main/loginPage.html', context)
+
 
