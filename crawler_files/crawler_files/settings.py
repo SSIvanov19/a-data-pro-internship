@@ -10,6 +10,7 @@
 import logging
 import logging_loki
 import logging.handlers
+import sentry_sdk
 from multiprocessing import Queue
 import os
 from dotenv import load_dotenv
@@ -38,7 +39,15 @@ logging.basicConfig(
    handlers=[handler]
 )
 
-#logging.getLogger().setLevel(logging.INFO)
+# Enable Sentry
+sentry_sdk.init(
+    os.getenv('SENTRY_TOKEN'),
+
+    # Set traces_sample_rate to 1.0 to capture 100%
+    # of transactions for performance monitoring.
+    # We recommend adjusting this value in production.
+    traces_sample_rate=1.0
+)
 
 BOT_NAME = 'crawler_files'
 

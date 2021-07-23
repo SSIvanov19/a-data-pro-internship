@@ -4,6 +4,7 @@
 # See: https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 
 import pyodbc
+import sys
 import logging
 import os
 from dotenv import load_dotenv
@@ -27,8 +28,12 @@ class CrawlerFilesPipeline:
 
         # Try to connect to database
         try:
-            self.conn = pyodbc.connect('DRIVER={FreeTDS};SERVER='+self.server+';DATABASE=' +
-                                       self.database+';User='+self.username+';Password='+self.password)
+            if (sys.platform == 'win32'):
+                self.conn = pyodbc.connect('DRIVER={SQL Server};SERVER='+self.server+';DATABASE=' +
+                                           self.database+';User='+self.username+';Password='+self.password)
+            else:
+                self.conn = pyodbc.connect('DRIVER={FreeTDS};SERVER='+self.server+';DATABASE=' +
+                                           self.database+';User='+self.username+';Password='+self.password)
         except pyodbc.Error as err:
             self.logger.error(err,
                               extra={"tags": {"service": "MSSQL"}})

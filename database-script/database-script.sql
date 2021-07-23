@@ -1,6 +1,6 @@
 USE [master]
 GO
-/****** Object:  Database [ADataProInternship]    Script Date: 22/07/2021 19:10:19 ******/
+/****** Object:  Database [ADataProInternship]    Script Date: 23/07/2021 10:41:53 ******/
 CREATE DATABASE [ADataProInternship]
  CONTAINMENT = NONE
  ON  PRIMARY 
@@ -80,7 +80,7 @@ ALTER DATABASE [ADataProInternship] SET QUERY_STORE = OFF
 GO
 USE [ADataProInternship]
 GO
-/****** Object:  Table [dbo].[LinkForEachProductInStore]    Script Date: 22/07/2021 19:10:19 ******/
+/****** Object:  Table [dbo].[LinkForEachProductInStore]    Script Date: 23/07/2021 10:41:53 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -100,7 +100,7 @@ CREATE TABLE [dbo].[LinkForEachProductInStore](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[PricesForEachStore]    Script Date: 22/07/2021 19:10:19 ******/
+/****** Object:  Table [dbo].[PricesForEachStore]    Script Date: 23/07/2021 10:41:53 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -122,7 +122,7 @@ CREATE TABLE [dbo].[PricesForEachStore](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Products]    Script Date: 22/07/2021 19:10:19 ******/
+/****** Object:  Table [dbo].[Products]    Script Date: 23/07/2021 10:41:53 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -138,7 +138,7 @@ CREATE TABLE [dbo].[Products](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Stores]    Script Date: 22/07/2021 19:10:19 ******/
+/****** Object:  Table [dbo].[Stores]    Script Date: 23/07/2021 10:41:53 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -180,7 +180,7 @@ ON DELETE CASCADE
 GO
 ALTER TABLE [dbo].[PricesForEachStore] CHECK CONSTRAINT [FK_PriceForEachStore_Stores]
 GO
-/****** Object:  StoredProcedure [dbo].[AddProduct]    Script Date: 22/07/2021 19:10:19 ******/
+/****** Object:  StoredProcedure [dbo].[AddProduct]    Script Date: 23/07/2021 10:41:53 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -212,8 +212,12 @@ BEGIN
 	VALUES (@ProductStore)
 END
 
-INSERT INTO LinkForEachProductInStore (ProductId, StoreId, Link)
-SELECT(SELECT Id FROM Products WHERE ProductNumber = @ProductNumber) as ProductId, (SELECT Id FROM Stores WHERE StoreName = @ProductStore) as StoreId, @UrlLink
+-- Check if there is already a link
+IF NOT EXISTS(SELECT Link FROM LinkForEachProductInStore WHERE Link = @UrlLink)
+BEGIN
+	INSERT INTO LinkForEachProductInStore (ProductId, StoreId, Link)
+	SELECT(SELECT Id FROM Products WHERE ProductNumber = @ProductNumber) as ProductId, (SELECT Id FROM Stores WHERE StoreName = @ProductStore) as StoreId, @UrlLink
+END
 
 INSERT INTO PricesForEachStore (ProductId, StoreId, IsAvailable, Price)
 SELECT(SELECT Id FROM Products WHERE ProductNumber = @ProductNumber) as ProductId, (SELECT Id FROM Stores WHERE StoreName = @ProductStore) as StoreId, @IsProductAvailable, @ProductPrice
