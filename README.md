@@ -4,7 +4,7 @@
   </p>
   <h1 align = "center"> Lorem ipsum </h1>
   <p align = "center">
-   <img src = "https://img.shields.io/github/languages/count/ssivanov19/a-data-pro-internshipacabra?style=for-the-badge">
+   <img src = "https://img.shields.io/github/languages/count/ssivanov19/a-data-pro-internship?style=for-the-badge">
    <img src = "https://img.shields.io/github/contributors/ssivanov19/a-data-pro-internship?style=for-the-badge">
    <img src = "https://img.shields.io/github/repo-size/ssivanov19/a-data-pro-internship?style=for-the-badge">
    <img src = "https://img.shields.io/github/last-commit/ssivanov19/a-data-pro-internship?style=for-the-badge">
