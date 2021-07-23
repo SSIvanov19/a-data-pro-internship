@@ -1,0 +1,46 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<div class="text-center">
+    <div class="display-container center">
+        <img src="/images/meal.jpg" style="width:100%">
+        <div class="text-block">
+            <h1 class="display-4">Nutrition and Health</h1>
+        </div>
+    </div>
+    <style>
+        .display-container {
+            position: relative;
+        }
+        img {
+            border-radius: 10px;
+        }
+        .text-block {
+            position: absolute;
+            display: inline-block;
+            top: 20px;
+            left: 20px;
+            background-color: azure;
+            color: black;
+            box-shadow: 0 0 10px 3px rgba(100, 100, 100, 0.7);
+            padding-left: 20px;
+            padding-right: 20px;
+            border-radius: 10px;
+        }
+    </style>
+    <br>
+    <p>
+        In theory, keeping a food diary is a great idea, but how many of us have failed after
+        just one day? Or even after the first meal? If you’ve given up, then you’re not alone, and
+        it’s probably not your fault.
+    </p>
+    <br>
+    <p>
+        However, there are many excellent reasons to keep a food diary. If you want to lose weight,
+        eat better, or figure out what’s triggering your IBS (irritable bowel syndrome), then a food
+        log is probably one of the first things a nutritionist or dietitian will ask you to do. That's
+        why we have decided to create a place for self improvement, reaching goals and aspirations
+        and we hope it makes the process at least a little bit easier.
+    </p>
+</div>
+{% endblock %}

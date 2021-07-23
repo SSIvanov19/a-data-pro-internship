@@ -1,0 +1,11 @@
+{% extends "main/base.html" %}
+<head>
+    {% load staticfiles %} <!-- Prepare django to load static files -->
+ </head>
+ <body>
+    <div>
+        <img src="{{ images.image1.url }}" />
+    </div>
+ </body>
+{% block content %}
+{% endblock %}
