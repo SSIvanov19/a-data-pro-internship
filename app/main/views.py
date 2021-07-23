@@ -14,11 +14,14 @@ from .forms import CreateUserForm
 def home(response):
     return render(response, "main/home.html", {})
 
+
 def account(response):
     return render(response, "main/account.html", {})
 
+
 def scraper(response):
     return render(response, "main/scraper.html", {})
+
 
 def registerPage(request):
 	if request.user.is_authenticated:
@@ -33,10 +36,10 @@ def registerPage(request):
 				messages.success(request, 'Account was created for ' + user)
 
 				return redirect('loginPage')
-			
 
 		context = {'form':form}
 		return render(request, 'main/registerPage.html', context)
+
 
 def loginPage(request):
 	if request.user.is_authenticated:
@@ -52,9 +55,15 @@ def loginPage(request):
 				login(request, user)
 				return redirect('home')
 			else:
-				messages.info(request, 'Username OR password is incorrect')
+				messages.info(request, 'Username or password is incorrect')
 
 		context = {}
 		return render(request, 'main/loginPage.html', context)
+
+
+
+def logoutUser(request):
+	logout(request)
+	return redirect('loginPage')
 
 
