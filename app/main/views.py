@@ -29,8 +29,18 @@ def scraper(request):
 	context = {'table': table}
 	return render(request, "main/scraper.html", context=context)
 
-def productStats(response):
-	return render(response, "main/productStats.html", {})
+def productStats(request):
+	#Get the product name from the url
+	productNumber = request.GET.get('product_number')
+
+	#Check if product name is not empty
+	if productNumber == None or productNumber == '':
+		return render(request, "main/scraper.html", {})
+
+	product = Products.objects.get(productnumber=productNumber)
+
+	context = {'product': product}
+	return render(request, "main/productStats.html", context=context)
 
 def registerPage(request):
 	if request.user.is_authenticated:
