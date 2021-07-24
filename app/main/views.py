@@ -5,9 +5,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
 
 from django.contrib import messages
-from .models import *
+from .models import Products
 from .forms import CreateUserForm
-
 # Create your views here.
 
 
@@ -19,9 +18,19 @@ def account(response):
     return render(response, "main/account.html", {})
 
 
-def scraper(response):
-    return render(response, "main/scraper.html", {})
+def scraper(request):
+	#Get the product name from the url
+	productName = request.GET.get('product_name')
+	table = None
+	
+	#Check if product name is not empty
+	if productName != None and productName != '':
+		table = Products.objects.filter(productname__icontains=productName)
+	context = {'table': table}
+	return render(request, "main/scraper.html", context=context)
 
+def productStats(response):
+	return render(response, "main/productStats.html", {})
 
 def registerPage(request):
 	if request.user.is_authenticated:

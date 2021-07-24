@@ -1,4 +1,22 @@
 {% extends "main/base.html" %}
-
+{% block title %}Scraper{% endblock %}
 {% block content %}
+    <br><br>
+    <form action="{% url 'scraper' %}" method="get">
+        <label for="product_name">Enter Product name: </label>
+        <input id="product_name" type="text" name="product_name" value="" placeholder="Name of the product">
+        <input type="submit" value="Search">
+    </form>
+
+
+    {% for row in table %}
+        <br>
+        <form action="{% url 'productStats' %}" method="get">
+            <input id="productNumber" type="hidden" name="productNumber" value="{{ row.productnumber }}">
+            <input type="submit" value="{{ row.productname }} - {{ row.productnumber }}">
+        </form>
+    {% endfor %}
+    <br><br>
+    <a href="{% url 'home' %}">back</a>
+    <br><br>
 {% endblock %}
