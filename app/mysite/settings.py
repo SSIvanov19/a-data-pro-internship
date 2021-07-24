@@ -78,10 +78,21 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+        'ENGINE': 'sql_server.pyodbc',
+        'NAME': config("DB"),
+        'USER': config("DB_USER"),
+        'PASSWORD': config("DB_PASSWORD"),
+        'HOST': config("DB_SERVER"),
+        'PORT': '',
+
+        'OPTIONS': {
+            'driver': "SQL Server",
+        },
+    },
 }
+
+# set this to False if you want to turn off pyodbc's connection pooling
+DATABASE_CONNECTION_POOLING = False
 
 
 # Password validation
