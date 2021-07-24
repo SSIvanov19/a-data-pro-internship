@@ -82,11 +82,12 @@ DATABASES = {
         'NAME': config("DB"),
         'USER': config("DB_USER"),
         'PASSWORD': config("DB_PASSWORD"),
-        'HOST': config("DB_SERVER"),
+        'HOST': 'DESKTOP-OOH4N84\SQLEXPRESS',
         'PORT': '',
 
         'OPTIONS': {
-            'driver': "SQL Server",
+            'driver': 'ODBC Driver 17 for SQL Server',
+            'unicode_results': True,
         },
     },
 }
