@@ -1,23 +1,23 @@
-from bs4 import BeautifulSoup #обработване на html файл
-import requests #свързване към сайт
-import telebot #връзка с бот
-import sqlite3 #връзка с база данни
+from bs4 import BeautifulSoup 
+import requests
+import telebot 
+import sqlite3 
 
-bot = telebot.TeleBot('1903435250:AAHYl9sTuclgFOqPcbLCppD3TVUINjpIas0') #токен бота
+bot = telebot.TeleBot('1903435250:AAHYl9sTuclgFOqPcbLCppD3TVUINjpIas0') #bot token
 # @webmetry_bot
 
 
-def req(url): #метод за получаване на код на страница
+def req(url): 
     resp = requests.get(url)
     soup = BeautifulSoup(resp.text, 'lxml')
     return soup
 
 @bot.message_handler(commands=['start'])
 def start_message(message):
-    cn = sqlite3.connect('database.db')#свързване с база данни
-    cur = cn.cursor()#създаване на курсор на база данни 
+    cn = sqlite3.connect('database.db')
+    cur = cn.cursor()
     cur.execute("DROP TABLE IF EXISTS saveps")
-    cur.execute("CREATE TABLE IF NOT EXISTS saveps(link TEXT, price TEXT)")#създаване на таблица в база данни в случаи на нейното отсътствие
+    cur.execute("CREATE TABLE IF NOT EXISTS saveps(link TEXT, price TEXT)")
     #searchOzone()
     searchJarcomputers()
     searchOzone()
