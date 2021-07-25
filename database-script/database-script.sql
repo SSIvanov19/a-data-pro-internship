@@ -1,13 +1,12 @@
 USE [master]
 GO
 /****** Object:  Database [ADataProInternship]    Script Date: 25/07/2021 14:56:08 ******/
-CREATE DATABASE [ADataProInternship]
- CONTAINMENT = NONE
- ON  PRIMARY 
-( NAME = N'ADataProInternship', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL15.SQLEXPRESS\MSSQL\DATA\ADataProInternship.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
- LOG ON 
-( NAME = N'ADataProInternship_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL15.SQLEXPRESS\MSSQL\DATA\ADataProInternship_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
- WITH CATALOG_COLLATION = DATABASE_DEFAULT
+IF EXISTS (SELECT * FROM sysdatabases WHERE NAME='[ADataProInternship]')
+BEGIN
+	DROP DATABASE [ADataProInternship]
+END
+GO
+	CREATE DATABASE [ADataProInternship]
 GO
 ALTER DATABASE [ADataProInternship] SET COMPATIBILITY_LEVEL = 150
 GO

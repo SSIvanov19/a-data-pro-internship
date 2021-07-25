@@ -9,4 +9,11 @@
     <p>{{price.storeid.storename}} - {{ price.price }}</p>
 </a>
 {% endfor %}
+{% if user.is_authenticated %}
+<form method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="product_number_to_subscribe" value="{{ product.productnumber }}">
+    <input type="submit" value="Абониране за продукта">
+</form>
+{% endif %}
 {% endblock %}

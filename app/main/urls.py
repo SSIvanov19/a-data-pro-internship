@@ -9,6 +9,7 @@ path("scraper/", views.scraper, name="scraper"),
 path('registerPage/', views.registerPage, name="registerPage"),
 path('loginPage/', views.loginPage, name="loginPage"),  
 path('logout/', views.logoutUser, name="logout"),
-path('productStats/', views.productStats, name="productStats"),	
+path('productStats/', views.productStats, name="productStats"),
+path('emailVerification/<uidb64>/<token>', views.activate, name='emailActivate')	
 ]
 
