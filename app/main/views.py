@@ -5,7 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
 
 from django.contrib import messages
-from .models import Products
+from .models import Products, Pricesforeachstore, Linkforeachproductinstore, Stores
 from .forms import CreateUserForm
 # Create your views here.
 
@@ -37,9 +37,20 @@ def productStats(request):
 	if productNumber == None or productNumber == '':
 		return render(request, "main/scraper.html", {})
 
+	#Get the product from the database
 	product = Products.objects.get(productnumber=productNumber)
+	#Get the prices for the product from the database
+	prices = Pricesforeachstore.objects.filter(productid=product.id)
+	#Get the links for the product from the database
+	links = Linkforeachproductinstore.objects.filter(productid=product.id)
+	#Sort the prices
+	prices = list(prices)
+	prices.sort(key=lambda x: x.price)
+	#Add link to each store
+	for p in prices:
+		p.link = links.filter(storeid = p.storeid.id)[0].link
 
-	context = {'product': product}
+	context = {'product': product, 'prices': prices}
 	return render(request, "main/productStats.html", context=context)
 
 def registerPage(request):

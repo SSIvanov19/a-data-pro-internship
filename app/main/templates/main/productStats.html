@@ -3,4 +3,10 @@
 {% block content %}
 <h1>{{product.productname}}</h1>
 <img src="{{ product.imglink }}" width="400px">
+<p>Цена в:</p>
+{% for price in prices %}
+<a href="{{ price.link }}">
+    <p>{{price.storeid.storename}} - {{ price.price }}</p>
+</a>
+{% endfor %}
 {% endblock %}
