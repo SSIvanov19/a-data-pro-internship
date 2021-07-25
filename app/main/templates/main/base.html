@@ -1,53 +1,141 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <a class="navbar-brand" href="#">webmetry</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-      
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href="/home/">Home page<span class="sr-only">(current)</span></a>
+<head>
+  {% load static %}
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <meta name="description" content="Website for a data pro">
+  <meta name="keywords" content="python, CSS, JS, scrapy, SQL, data, Django">
+  <meta name="author" content="Green Team">
+  <meta name="theme-color" content="#ffffff">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Home | Webmetry</title>
+  <link href="{% static 'css/bootstrap.min.3.4.1.css' %}" rel="stylesheet">
+  <link href="{% static 'css/ie10-viewport-bug-workaround.css' %}" rel="stylesheet">
+  <link href="{% static 'css/navbar.css' %}" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    rel="stylesheet">
+  <link href="{% static 'assets/vendor/aos/aos.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+  <script src="{% static 'js/ie-emulation-modes-warning.js' %}"></script>
+
+</head>
+
+<body>
+  <navbar class="navbar navbar-expand-md fixed-top navbar-light font-weight-bold">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/home/">
+        <img class="logo horizontal-logo" src="{% static 'img/logo_small.png' %}" alt="logo" width="35px" height="35px">
+        Webmetry
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/home/">Начало</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/scraper/">Търсене</a>
+          </li>
+          {% if not user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" href="/loginPage/">Вход</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/registerPage/">Регистрация</a>
+          </li>
+          {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="/account/">Акаунт</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/logout/">Изход</a>
+          </li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </navbar>
+
+  {% block content %}
+  {% endblock %}
+
+  <!-- Footer -->
+  <hr class="featurette-divider">
+  <footer class="page-footer font-small stylish-color-dark pt-4">
+    <!-- Footer Links -->
+    <div class="container-footer text-center text-md-left">
+      <!-- Grid row -->
+      <div class="row">
+        <!-- Grid column -->
+        <div class="col-md-7 col-lg-4">
+          <!-- Content -->
+          <h5 class="font-weight-bold text-uppercase mt-3 mb-4">ВЪПРОСИ</h5>
+          <p>Ако имате въпроси, можете да ни пишете по всяко време, ще се радваме да ви отговорим.</p>
+        </div>
+        <div class="col-md-7 col-lg-4">
+          <h5 class="font-weight-bold text-uppercase mt-3 mb-4">СЪЗДАТЕЛИ</h5>
+          <ul class="list-unstyled">
+            <li>
+              <a href="mailto:SSIvanov19@codingburgas.bg"> Стоян Иванов</a>
             </li>
-            <li class="nav-item active">
-                <a class="nav-link" href="/scraper/">Scraper<span class="sr-only">(current)</span></a>
-              </li>
-            {% if user.is_authenticated %}
-            <li class="nav-item active">
-                <a class="nav-link" href="/account/">Account<span class="sr-only">(current)</span></a>
+            <li>
+              <a href='mailto:kirilldomrachevv@gmail.com'> Силвия Войнова </a>
             </li>
-            {% else %}
-            <li class="nav-item active">
-                <a class="nav-link" href="/registerPage/">Register<span class="sr-only">(current)</span></a>
+            <li>
+              <a href='mailto:bglord333@gmail.com'> Денис Иванов </a>
             </li>
-              <li class="nav-item active">
-                <a class="nav-link" href="/loginPage/">Login<span class="sr-only">(current)</span></a>
-              </li>
-            {% endif %}
+            <li>
+              <a href='mailto:kirilldomrachevv@gmail.com'> Кирил Домрачев </a>
+            </li>
+
           </ul>
         </div>
-          <a class="nav-link" href="{% url 'logout' %}">Logout<span class="sr-only">(current)</span></a>
-      </nav>
-  </head>
+        <div class="col-md-7 col-lg-4">
+          <h5 class="font-weight-bold text-uppercase mt-3 mb-4">Контакти</h5>
+          <ul class="list-unstyled">
+            <li>
+              <a href="mailto:smart@codingburgas.bg">smart@codingburgas.bg</a>
+            </li>
+            <li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- Copyright -->
+    <div class="footer-copyright text-center pt-6">© 2021 Webmetry. All Rights Reserved.</div>
+    </div>
+  </footer>
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  <script src="{% static 'js/jquery-1.12.4.min.js' %}"
+    integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ"
+    crossorigin="anonymous"></script>
+  <script>window.jQuery || document.write(`<script src="{% static 'js/jquery.min.js' %}"><\/script>`)</script>
+  <script src="{% static 'js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'js/ie10-viewport-bug-workaround.js' %}"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+</body>
 
-
-  <body>
-    {% block content %}
-    {% endblock %}
-
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-  </body>
 </html>

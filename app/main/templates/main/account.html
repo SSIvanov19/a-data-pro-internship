@@ -1,25 +1,103 @@
 {% extends "main/base.html" %}
 {% block title %}Account{% endblock %}
 {% block content %}
-<div>
-   <h1>Account page...</h1>
-   <p>Username: {{user.username}}</p>
-   <p>Email: {{user.email}}</p>
-   <h3>Change info</h3>
-   <form method="POST">
-      {% csrf_token %}
-      <label>New username:</label>
-      <input type="text" name="username" value="{{user.username}}">
-      <label>New email:</label>
-      <input type="email" name="email" value="{{user.email}}">
-      <label>New password:</label>
-      <input type="password" name="password" value="">
-      <input type="submit" value="Submit">
-   </form>
-   <form method="POST">
-      {% csrf_token %}
-      <input type="hidden" name="delete_account" id="delete_account" value="true">
-      <input type="submit" value="Delete Account">
-   </form>
+{% load static %}
+<div class="container down" style="padding-top: 7rem;">
+   <div class="main-body">
+      <div class="row gutters-sm">
+         <div class="col-md-4 mb-3">
+            <div class="card">
+               <div class="card-body">
+                  <div class="d-flex flex-column align-items-center text-center">
+                     <img
+                        src="{% static 'img/default-user-image.png' %}"
+                        alt="Admin" class="rounded-circle" width="150">
+                     <div class="mt-3">
+                        <h4>{{user.username}}</h4>
+                        <p class="text-muted font-size-sm">Бургас, България, Европа</p>
+                     </div>
+                  </div>
+               </div>
+            </div>
+
+         </div>
+
+         <div class="col-md-8">
+            <div class="card mb-3">
+               <div class="card-body">
+                  <div class="row">
+                     <div class="col-sm-3">
+                        <h6 class="mb-0">Потребителско име: </h6>
+                     </div>
+                     <div class="col-sm-9 text-secondary">
+                        {{user.username}}
+                     </div>
+                     <div class="col-sm-3">
+                        <input type="email" class="form-control" id="username" placeholder="Промяна на потребителското име">
+                     </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                     <div class="col-sm-3">
+                        <h6 class="mb-0">Имейл:</h6>
+                     </div>
+                     <div class="col-sm-9 text-secondary">
+                        {{user.email}}
+                     </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                     <div class="col-sm-3">
+                        <h6 class="mb-0">Телефон:</h6>
+                     </div>
+                     <div class="col-sm-9 text-secondary">
+                        0888 888 888
+                     </div>
+                  </div>
+                  <hr>
+               </div>
+            </div>
+            <div class="row gutters-sm">
+               <div class="col-sm-6 mb-3">
+                  <div class="card h-100">
+                     <div class="card-body">
+                        <h4 class="d-flex align-items-center mb-3">Абонаменти за продукти: </h4>
+                           <p>Лаптоп Acer</p>
+                           <p>Лаптоп Asus</p>
+                           <p>Лаптоп Lenovo</p>
+                           <p>Smartphone</p>
+                        </ul>
+                     </div>
+                  </div>
+               </div>
+
+            </div>
+         </div>
+      </div>
+   </div>
 </div>
+<!--
+
+   <div>
+      <h1>Account page...</h1>
+      <p>Username: {{user.username}}</p>
+      <p>Email: {{user.email}}</p>
+      <h3>Change info</h3>
+      <form method="POST">
+         {% csrf_token %}
+         <label>New username:</label>
+         <input type="text" name="username" value="{{user.username}}">
+         <label>New email:</label>
+         <input type="email" name="email" value="{{user.email}}">
+         <label>New password:</label>
+         <input type="password" name="password" value="">
+         <input type="submit" value="Submit">
+      </form>
+      <form method="POST">
+         {% csrf_token %}
+         <input type="hidden" name="delete_account" id="delete_account" value="true">
+         <input type="submit" value="Delete Account">
+      </form>
+   </div>
+-->
 {% endblock %}

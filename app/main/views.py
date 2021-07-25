@@ -21,7 +21,7 @@ from django.urls import reverse
 from crawler_files.crawler_files.startCrawling import startCrawling
 
 def home(response):
-    return render(response, "main/home.html", {})
+    return render(response, "main/index.html", {})
 
 
 def account(request):
@@ -108,7 +108,7 @@ def productStats(request):
 
 def registerPage(request):
 	if request.user.is_authenticated:
-		return redirect('home')
+		return redirect('account')
 	else:
 		form = CreateUserForm()
 		if request.method == 'POST':
@@ -153,7 +153,7 @@ def activate(request, uidb64, token):
 
 def loginPage(request):
 	if request.user.is_authenticated:
-		return redirect('home')
+		return redirect('account')
 	else:
 		if request.method == 'POST':
 			username = request.POST.get('username')
