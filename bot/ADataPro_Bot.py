@@ -4,7 +4,7 @@ import telebot
 import sqlite3 
 
 bot = telebot.TeleBot('1903435250:AAHYl9sTuclgFOqPcbLCppD3TVUINjpIas0') #bot token
-# @webmetry_bot
+# @webmetry_bot - insert into telegram
 
 
 def req(url): 
