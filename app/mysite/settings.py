@@ -82,7 +82,7 @@ DATABASES = {
         'NAME': config("DB"),
         'USER': config("DB_USER"),
         'PASSWORD': config("DB_PASSWORD"),
-        'HOST': 'DESKTOP-OOH4N84\SQLEXPRESS',
+        'HOST': config("DB_HOST"),
         'PORT': '',
 
         'OPTIONS': {

@@ -7,8 +7,10 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .models import Products, Pricesforeachstore, Linkforeachproductinstore, Stores
 from .forms import CreateUserForm
+from multiprocessing import Pool
 # Create your views here.
 
+from crawler_files.crawler_files.startCrawling import startCrawling
 
 def home(response):
     return render(response, "main/home.html", {})
@@ -48,8 +50,17 @@ def account(request):
 def scraper(request):
 	#Get the product name from the url
 	productName = request.GET.get('product_name')
+	startScrapy = request.GET.get('start_scrapy')
 	table = None
 	
+	if startScrapy == 'true' and productName != None and productName != '':
+		try:
+			pool = Pool(processes=1)
+			pool.apply_async(startCrawling, [productName])
+			pool.close()
+		except Exception as e:
+			print(e)
+
 	#Check if product name is not empty
 	if productName != None and productName != '':
 		table = Products.objects.filter(productname__icontains=productName)

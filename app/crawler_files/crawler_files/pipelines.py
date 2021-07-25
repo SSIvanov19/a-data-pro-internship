@@ -17,7 +17,7 @@ class CrawlerFilesPipeline:
 
     def __init__(self):
         # Path to .env file
-        dotenv_path = Path('../../.env')
+        dotenv_path = Path('../../../.env')
         load_dotenv(dotenv_path=dotenv_path)
 
         # Load the data from .env file

@@ -7,48 +7,6 @@
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
-import logging
-import logging_loki
-import logging.handlers
-import sentry_sdk
-from multiprocessing import Queue
-import os
-from dotenv import load_dotenv
-from pathlib import Path
-
-# Load environment variables
-dotenv_path = Path('../../.env')
-load_dotenv(dotenv_path=dotenv_path)
-
-# Set the minimal loggin level to Info
-logging.getLogger("requests").setLevel(logging.INFO)
-logging.getLogger("urllib3").setLevel(logging.INFO)
-
-# Set up custom logger for scrapy
-# Set up logging handler
-handler = logging_loki.LokiQueueHandler(
-    Queue(-1),
-    url=os.getenv('LOKI_URL'),
-    tags={"application": "a-data-pro-internship-test"},
-    version="1",
-)
-
-#Add handler to the root logger
-logging.basicConfig(
-   level=logging.INFO,
-   handlers=[handler]
-)
-
-# Enable Sentry
-sentry_sdk.init(
-    os.getenv('SENTRY_TOKEN'),
-
-    # Set traces_sample_rate to 1.0 to capture 100%
-    # of transactions for performance monitoring.
-    # We recommend adjusting this value in production.
-    traces_sample_rate=1.0
-)
-
 BOT_NAME = 'crawler_files'
 
 SPIDER_MODULES = ['crawler_files.spiders']
