@@ -4,8 +4,10 @@
     <br><br>
     <form action="{% url 'scraper' %}" method="get">
         <label for="product_name">Enter Product name: </label>
-        <input id="product_name" type="text" name="product_name" value="" placeholder="Name of the product">
+        <input type="text" id="product_name" name="product_name" value="" placeholder="Name of the product">
         <input type="submit" value="Search">
+        <input type="hidden" name="start_scrapy" id="start_scrapy" value="true">
+        <input type="submit" value="Extended Search"></input>
     </form>
 
 

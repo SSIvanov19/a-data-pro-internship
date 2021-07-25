@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, request
 from django.shortcuts import render, redirect 
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
@@ -14,8 +14,35 @@ def home(response):
     return render(response, "main/home.html", {})
 
 
-def account(response):
-    return render(response, "main/account.html", {})
+def account(request):
+	if not request.user.is_authenticated:
+		return redirect('home')
+	else:
+		if request.method == 'POST':
+			username = request.POST.get('username')
+			email = request.POST.get('email')
+			password =request.POST.get('password')
+			deleteAccount = request.POST.get('delete_account')
+			
+			user = request.user
+
+			if deleteAccount == 'true':
+				user.delete()
+				logout(request)
+				return redirect('home')
+
+			if username != None and username != '':
+				user.username = username
+			
+			if email != None and email != '':
+				user.email = email
+			
+			if password != None and password != '':
+				user.set_password(password)
+			
+			user.save()
+
+	return render(request, "main/account.html", {})
 
 
 def scraper(request):

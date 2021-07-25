@@ -1,8 +1,25 @@
 {% extends "main/base.html" %}
-<head>
-    {% load staticfiles %} <!-- Prepare django to load static files -->
- </head>
- <body>
-    <div>
-    </div>
- </body>
+{% block title %}Account{% endblock %}
+{% block content %}
+<div>
+   <h1>Account page...</h1>
+   <p>Username: {{user.username}}</p>
+   <p>Email: {{user.email}}</p>
+   <h3>Change info</h3>
+   <form method="POST">
+      {% csrf_token %}
+      <label>New username:</label>
+      <input type="text" name="username" value="{{user.username}}">
+      <label>New email:</label>
+      <input type="email" name="email" value="{{user.email}}">
+      <label>New password:</label>
+      <input type="password" name="password" value="">
+      <input type="submit" value="Submit">
+   </form>
+   <form method="POST">
+      {% csrf_token %}
+      <input type="hidden" name="delete_account" id="delete_account" value="true">
+      <input type="submit" value="Delete Account">
+   </form>
+</div>
+{% endblock %}

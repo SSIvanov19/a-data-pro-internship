@@ -6,27 +6,24 @@ from spiders.jarcomputers import JarcomputersSpider
 from spiders.ardes import ArdesSpider
 from spiders.emag import EmagSpider
 
-# Load the setting for scrapy
-process = CrawlerProcess(get_project_settings())
+def startCrawling(productToSearch):
+    # Load the setting for scrapy
+    process = CrawlerProcess(get_project_settings())
 
-# Set up logging
-logger = logging.getLogger('root')
+    # Set up logging
+    logger = logging.getLogger('root')
 
-#Ask for input
-productToSearch = input()
 
-logger.info(
-    "Starting crawler for " + productToSearch,
-    extra={"tags": {"service": "crawler"}},
-)
+    logger.info(
+        "Starting crawler for " + productToSearch,
+        extra={"tags": {"service": "crawler"}},
+    )
 
-ArdesSpider.start_urls[0] += productToSearch
-JarcomputersSpider.start_urls[0] += productToSearch
-EmagSpider.start_urls[0] += productToSearch
+    ArdesSpider.start_urls[0] += productToSearch
+    JarcomputersSpider.start_urls[0] += productToSearch
+    EmagSpider.start_urls[0] += productToSearch
 
-process.crawl(ArdesSpider)
-process.crawl(JarcomputersSpider)
-process.crawl(EmagSpider)
-process.start()
-
-exit()
+    process.crawl(ArdesSpider)
+    process.crawl(JarcomputersSpider)
+    process.crawl(EmagSpider)
+    process.start()
