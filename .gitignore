@@ -142,4 +142,5 @@ dmypy.json
 cython_debug/
 data.db
 .vscode/*
+.vscode
 .idea

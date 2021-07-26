@@ -15,6 +15,8 @@ Django = "3.0.6"
 python-decouple = "^3.4"
 django-mssql-backend = "^2.8.1"
 six = "^1.16.0"
+flake8 = "^3.9.2"
+black = "^21.7b0"
 
 [tool.poetry.dev-dependencies]
 autopep8 = "^1.5.7"

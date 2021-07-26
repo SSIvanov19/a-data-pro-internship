@@ -1,71 +1,86 @@
 import scrapy
 from scrapy.exceptions import CloseSpider
-import logging
-from crawler_files.crawler_files.items import ProductItem 
+from crawler_files.crawler_files.items import ProductItem
 
-#Class: LaptopSpider
+
+# Class: LaptopSpider
 class EmagSpider(scrapy.Spider):
-    #Name of the spider
-    name = 'emag'
-    allowed_domains = ['emag.bg']
-    #Where to start crawling
-    start_urls = ['https://www.emag.bg/search/']
-    #List of href
+    # Name of the spider
+    name = "emag"
+    allowed_domains = ["emag.bg"]
+    # Where to start crawling
+    start_urls = ["https://www.emag.bg/search/"]
+    # List of href
     href = []
     i = 0
 
-    #Method to extract data about a product
-    #from the website catalogue
+    # Method to extract data about a product
+    # from the website catalogue
     def extractInfo(self, response):
-        self.logger.info('Extracting data from {}'.format(response.url),
-                         extra={"tags": {"service": "crawler"}})
+        self.logger.info(
+            "Extracting data from {}".format(response.url),
+            extra={"tags": {"service": "crawler"}},
+        )
 
-        #Store the data in a ProductItem class
+        # Store the data in a ProductItem class
         item = ProductItem()
 
-        #Store the data of the product
+        # Store the data of the product
         item = {
-                "productName": response.xpath("""//*[@id="page-skin"]/div[2]/div/div[1]/h1/text()""")
-                                .get()
-                                .split(',')[0]
-                                .replace('\n', '')
-                                .strip(),
-                "productNumber": response.xpath("""//*[@id="page-skin"]/div[2]/div/div[1]/div[2]/span/text()""")
-                                .get()
-                                .split(' ')[3], 
-                "productStore": "emag.bg",
-                "imgForProductLink": response.xpath("""//*[contains(@class, 'product-gallery-image')]/@href""").get(),
-                "urlLink": response.url,
-                "isProductAvailable": True,
-                "productPrice": float(response.xpath("""//p[contains(@class, 'product-new-price')]/text()""")
-                                .get()
-                                .replace('.', '')
-                                .strip() + "." + 
-                                response.xpath("""//p[contains(@class, 'product-new-price')]/sup/text()""")
-                                .get())
+            "productName": response.xpath(
+                """//*[@id="page-skin"]/div[2]/div/div[1]/h1/text()"""
+            )
+            .get()
+            .split(",")[0]
+            .replace("\n", "")
+            .strip(),
+            "productNumber": response.xpath(
+                """//*[@id="page-skin"]/div[2]/div/div[1]/div[2]/span/text()"""
+            )
+            .get()
+            .split(" ")[3],
+            "productStore": "emag.bg",
+            "imgForProductLink": response.xpath(
+                """//*[contains(@class, 'product-gallery-image')]/@href"""
+            ).get(),
+            "urlLink": response.url,
+            "isProductAvailable": True,
+            "productPrice": float(
+                response.xpath("""//p[contains(@class, 'product-new-price')]/text()""")
+                .get()
+                .replace(".", "")
+                .strip()
+                + "."
+                + response.xpath(
+                    """//p[contains(@class, 'product-new-price')]/sup/text()"""
+                ).get()
+            ),
         }
 
-        #Send the data to the pipeline
+        # Send the data to the pipeline
         yield item
 
-        #If there are not more product, stop the crawl
+        # If there are not more product, stop the crawl
         self.i = self.i + 1
-        if (self.i == self.href.__len__()):
-            self.logger.info('No more products found',
-                             extra={"tags": {"service": "crawler"}})
-            raise CloseSpider('Reached end of products on: emag.bg')
-        
-        #Crawl the next product
+        if self.i == self.href.__len__():
+            self.logger.info(
+                "No more products found", extra={"tags": {"service": "crawler"}}
+            )
+            raise CloseSpider("Reached end of products on: emag.bg")
+
+        # Crawl the next product
         yield scrapy.Request(self.href[self.i], callback=self.extractInfo)
 
-    #Method which finds the hrefs for the products
+    # Method which finds the hrefs for the products
     def parse(self, response):
-        #Store hrefs in a list
-        self.href = response.xpath("""//*[@id="card_grid"]/div/div[2]/div/div[1]/a/@href""").extract()
+        # Store hrefs in a list
+        self.href = response.xpath(
+            """//*[@id="card_grid"]/div/div[2]/div/div[1]/a/@href"""
+        ).extract()
 
-        #If there aren't any products, stop the crawl
+        # If there aren't any products, stop the crawl
         if self.href == []:
-            raise CloseSpider('No products found')
+            raise CloseSpider("No products found")
 
-        #Send requests to the hrefs and callback the method extractInfo
+        # Send requests to the hrefs and callback the method extractInfo
         yield scrapy.Request(self.href[self.i], callback=self.extractInfo)

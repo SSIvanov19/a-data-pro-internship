@@ -8,19 +8,21 @@ from crawler_files.crawler_files.items import ProductItem
 
 class ArdesSpider(scrapy.Spider):
     # Name of the spider
-    name = 'ardes'
-    allowed_domains = ['ardes.bg']
+    name = "ardes"
+    allowed_domains = ["ardes.bg"]
     # Where to start crawling
-    start_urls = ['https://ardes.bg/products?q=']
+    start_urls = ["https://ardes.bg/products?q="]
     # List of href
     href = []
     i = 0
-    logger = logging.getLogger('root')
+    logger = logging.getLogger("root")
 
     # Method which extract the data from the product page
     def extractInfo(self, response):
-        self.logger.info('Extracting data from {}'.format(response.url),
-                         extra={"tags": {"service": "crawler"}})
+        self.logger.info(
+            "Extracting data from {}".format(response.url),
+            extra={"tags": {"service": "crawler"}},
+        )
 
         # Store the data in a ProductItem class
         item = ProductItem()
@@ -29,15 +31,23 @@ class ArdesSpider(scrapy.Spider):
         item = {
             "productName": response.xpath("""//*[@id="cont_1"]/div/div[1]/h1/text()""")
             .get()
-            .split('-')[0]
-            .replace('\n', '')
+            .split("-")[0]
+            .replace("\n", "")
             .strip(),
-            "productNumber": response.xpath("""//*[@id="technical_parameters"]/div[1]/div/span[2]/span/text()""").get(),
+            "productNumber": response.xpath(
+                """//*[@id="technical_parameters"]/div[1]/div/span[2]/span/text()"""
+            ).get(),
             "productStore": "ardes",
-            "imgForProductLink": "https://ardes.bg" + response.xpath("""//*[@id="bigImage"]/@src""").get(),
+            "imgForProductLink": "https://ardes.bg"
+            + response.xpath("""//*[@id="bigImage"]/@src""").get(),
             "urlLink": response.url,
             "isProductAvailable": True,
-            "productPrice": float(response.xpath("""//*[@id="price-tag"]/text()""").get() + response.xpath("""//*[@id="buying-info"]/div[1]/span[2]/sup/text()""").get())
+            "productPrice": float(
+                response.xpath("""//*[@id="price-tag"]/text()""").get()
+                + response.xpath(
+                    """//*[@id="buying-info"]/div[1]/span[2]/sup/text()"""
+                ).get()
+            ),
         }
 
         # Send the data to the pipeline
@@ -45,10 +55,11 @@ class ArdesSpider(scrapy.Spider):
 
         # If there are not more product, stop the crawl
         self.i = self.i + 1
-        if (self.i == self.href.__len__()):
-            self.logger.info('No more products found',
-                             extra={"tags": {"service": "crawler"}})
-            raise CloseSpider('Reached end of products on: ardes.bg')
+        if self.i == self.href.__len__():
+            self.logger.info(
+                "No more products found", extra={"tags": {"service": "crawler"}}
+            )
+            raise CloseSpider("Reached end of products on: ardes.bg")
 
         # Crawl the next product
         yield response.follow(self.href[self.i], callback=self.extractInfo)
@@ -58,11 +69,12 @@ class ArdesSpider(scrapy.Spider):
     def parse(self, response):
         # Find all the hrefs
         self.href = response.xpath(
-            """//*[@id="ajax_content"]/div[2]/div[2]/div/div/div/div[1]/a/@href""").extract()
+            """//*[@id="ajax_content"]/div[2]/div[2]/div/div/div/div[1]/a/@href"""
+        ).extract()
 
         # If there aren't any products, stop the crawl
         if self.href == []:
-            raise CloseSpider('No products found')
+            raise CloseSpider("No products found")
 
         # Send requests to the hrefs and callback the method extractInfo
         yield response.follow(self.href[self.i], callback=self.extractInfo)

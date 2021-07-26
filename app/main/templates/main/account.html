@@ -78,9 +78,9 @@
                   <div class="card-body">
                      <h4 class="d-flex align-items-center mb-3">Абонаменти за продукти: </h4>
                      {% for product in products %}
-                        <a href="http://localhost:8000/productStats?product_number={{product.productId.productnumber}}">
-                           <p>{{product.productId.productname}}</p>
-                        </a>
+                     <a href="http://localhost:8000/productStats?product_number={{product.productId.productnumber}}">
+                        <p>{{product.productId.productname}}</p>
+                     </a>
                      {% endfor %}
                      </ul>
                   </div>

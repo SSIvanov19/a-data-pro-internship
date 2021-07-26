@@ -99,26 +99,26 @@
                         {% endfor %}
 
                         {% if user.is_authenticated %}
-                            <br>
-                                {% if isSubscribe == True %}
-                                    <div class="btn-group wishlist" style="margin: 5px;">
-                                        <form method="POST">
-                                            {% csrf_token %}
-                                            <input type="hidden" name="product_number_to_unsubscribe"
-                                                value="{{ product.productnumber }}">
-                                            <input type="submit" value="Отабониране за продукта" class="btn btn-danger">
-                                        </form>
-                                    </div>
-                                {% else %}
-                                    <div class="btn-group wishlist" style="margin: 5px;">
-                                        <form method="POST">
-                                            {% csrf_token %}
-                                            <input type="hidden" name="product_number_to_subscribe"
-                                                value="{{ product.productnumber }}">
-                                            <input type="submit" value="Абониране за продукта" class="btn btn-primary">
-                                        </form>
-                                    </div>
-                                {% endif %}
+                        <br>
+                        {% if isSubscribe == True %}
+                        <div class="btn-group wishlist" style="margin: 5px;">
+                            <form method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="product_number_to_unsubscribe"
+                                    value="{{ product.productnumber }}">
+                                <input type="submit" value="Отабониране за продукта" class="btn btn-danger">
+                            </form>
+                        </div>
+                        {% else %}
+                        <div class="btn-group wishlist" style="margin: 5px;">
+                            <form method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="product_number_to_subscribe"
+                                    value="{{ product.productnumber }}">
+                                <input type="submit" value="Абониране за продукта" class="btn btn-primary">
+                            </form>
+                        </div>
+                        {% endif %}
                         {% endif %}
                         {% for message in messages %}
                         <p id="messages">{{message}}</p>

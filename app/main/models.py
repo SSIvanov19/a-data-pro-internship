@@ -8,55 +8,88 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
 class Linkforeachproductinstore(models.Model):
-    productid = models.OneToOneField('Products', models.DO_NOTHING, db_column='ProductId', primary_key=True)  # Field name made lowercase.
-    storeid = models.ForeignKey('Stores', models.DO_NOTHING, db_column='StoreId')  # Field name made lowercase.
-    link = models.CharField(db_column='Link', unique=True, max_length=400)  # Field name made lowercase.
+    productid = models.OneToOneField(
+        "Products", models.DO_NOTHING, db_column="ProductId", primary_key=True
+    )  # Field name made lowercase.
+    storeid = models.ForeignKey(
+        "Stores", models.DO_NOTHING, db_column="StoreId"
+    )  # Field name made lowercase.
+    link = models.CharField(
+        db_column="Link", unique=True, max_length=400
+    )  # Field name made lowercase.
 
     class Meta:
         managed = False
-        db_table = 'LinkForEachProductInStore'
-        unique_together = (('productid', 'storeid'),)
+        db_table = "LinkForEachProductInStore"
+        unique_together = (("productid", "storeid"),)
 
 
 class Pricesforeachstore(models.Model):
-    productid = models.OneToOneField('Products', models.DO_NOTHING, db_column='ProductId', primary_key=True)  # Field name made lowercase.
-    storeid = models.ForeignKey('Stores', models.DO_NOTHING, db_column='StoreId')  # Field name made lowercase.
-    isavailable = models.BooleanField(db_column='IsAvailable')  # Field name made lowercase.
-    price = models.FloatField(db_column='Price', blank=True, null=True)  # Field name made lowercase.
+    productid = models.OneToOneField(
+        "Products", models.DO_NOTHING, db_column="ProductId", primary_key=True
+    )  # Field name made lowercase.
+    storeid = models.ForeignKey(
+        "Stores", models.DO_NOTHING, db_column="StoreId"
+    )  # Field name made lowercase.
+    isavailable = models.BooleanField(
+        db_column="IsAvailable"
+    )  # Field name made lowercase.
+    price = models.FloatField(
+        db_column="Price", blank=True, null=True
+    )  # Field name made lowercase.
 
     class Meta:
         managed = False
-        db_table = 'PricesForEachStore'
-        unique_together = (('productid', 'storeid'), ('productid', 'storeid'),)
+        db_table = "PricesForEachStore"
+        unique_together = (
+            ("productid", "storeid"),
+            ("productid", "storeid"),
+        )
 
 
 class Products(models.Model):
-    id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
-    productnumber = models.CharField(db_column='ProductNumber', max_length=52)  # Field name made lowercase.
-    productname = models.CharField(db_column='ProductName', max_length=255)  # Field name made lowercase.
-    imglink = models.CharField(db_column='ImgLink', max_length=255)  # Field name made lowercase.
+    id = models.AutoField(
+        db_column="Id", primary_key=True
+    )  # Field name made lowercase.
+    productnumber = models.CharField(
+        db_column="ProductNumber", max_length=52
+    )  # Field name made lowercase.
+    productname = models.CharField(
+        db_column="ProductName", max_length=255
+    )  # Field name made lowercase.
+    imglink = models.CharField(
+        db_column="ImgLink", max_length=255
+    )  # Field name made lowercase.
 
     class Meta:
         managed = False
-        db_table = 'Products'
+        db_table = "Products"
 
 
 class Stores(models.Model):
-    id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
-    storename = models.CharField(db_column='StoreName', max_length=255)  # Field name made lowercase.
+    id = models.AutoField(
+        db_column="Id", primary_key=True
+    )  # Field name made lowercase.
+    storename = models.CharField(
+        db_column="StoreName", max_length=255
+    )  # Field name made lowercase.
 
     class Meta:
         managed = False
-        db_table = 'Stores'
+        db_table = "Stores"
+
 
 class UsersSubscriptions(models.Model):
-    id = models.AutoField(db_column='Id', primary_key=True)
-    userid = models.ForeignKey(User, models.CASCADE, db_column='UserId', default="")
-    productId = models.ForeignKey(Products, models.CASCADE, db_column='ProductId', default="")
-    isAvaible = models.BooleanField(db_column='IsAvaible')
-    Price = models.FloatField(db_column='Price', blank=True, null=True)
+    id = models.AutoField(db_column="Id", primary_key=True)
+    userid = models.ForeignKey(User, models.CASCADE, db_column="UserId", default="")
+    productId = models.ForeignKey(
+        Products, models.CASCADE, db_column="ProductId", default=""
+    )
+    isAvaible = models.BooleanField(db_column="IsAvaible")
+    Price = models.FloatField(db_column="Price", blank=True, null=True)
 
     class Meta:
-        db_table = 'UsersSubscriptions'
-        unique_together = (('userid', 'productId'),)
+        db_table = "UsersSubscriptions"
+        unique_together = (("userid", "productId"),)
