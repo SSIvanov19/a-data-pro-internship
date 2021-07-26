@@ -14,15 +14,13 @@
    <hr>
   <p align = "center" style:"font-size:4em">
   <strong><big>
-   Lorem ipsum dolor sit amet, consectetur adipiscing elit.  💧
+   Inovative platform for .  💧
   </strong><big>
   </p><hr>
   <h1>💻 About  </h1>
   <p> <big>
-    Duis aliquet tincidunt justo sit amet bibendum. Fusce quis enim ante. Phasellus pharetra sem vitae justo congue mollis. 
+    Our project consists of a website that help its users by providing them with up-to-date information about the price and availability of differen products. The information is retrieved automatically through crawling. Users can make account and susbcribe to products and they will recieve up-to-date information about the product. 
    </big></p>
-
-   <a href = "https://github.com/ssivanov19/a-data-pro-internship/wiki"><h2>Our Documentation</h2></a>
 
   <h1>🎥 Demo of our project </h1>
 
@@ -32,22 +30,32 @@
 
   <h1>⌨️ How it works</h1>
   
-  <p><big>Sed vitae augue lacus. Quisque vitae tempor sapien:</p></big>
+  <p><big>Our project consists of 4 main parts:</p></big>
   <ol>
     <li>👨‍💻 Back end : </li>
       <ul>
-        <li>Vivamus sit amet vulputate orci, a interdum nibh. </li>
-        <li>Vivamus sit amet vulputate orci, a interdum nibh. </li>
-        <li>Vivamus sit amet vulputate orci, a interdum nibh. </li>
+        <li>The back-end is entirely written on Django, a python framework <img src="https://emoji.gg/assets/emoji/py.png" width="18px" height="18px" alt="py">. </li>
+        <li>It comunicates with the database, with the help of <strong>django-mssql-backend</strong></li>
       </ul>
     <br>
     <li>Front end</li>
       <ul>
-        <li>Vivamus sit amet vulputate orci, a interdum nibh.</li>
-        <li>Vivamus sit amet vulputate orci, a interdum nibh.</li>
-        <li>Vivamus sit amet vulputate orci, a interdum nibh.</li>
+        <li>Used as teamplates for the backend.</li>
+        <li>Written in Boostrap, a powerful CSS framework.</li>
       </ul>
     <br>
+    <li>Web Crawler</li>
+      <ul>
+        <li>Written in Scrapy, a python framework.</li>
+        <li>It collects data and stores it into the database.</li>
+      </ul>
+    <br>
+    <li>📊 Database</li>
+      <ul>
+        <li>Communicates with Django and Scrapy.</li>
+        <li>Written in msSQL</li>
+        <li>Uses stored procedures.</li>
+      </ul>
   </ol>
 
 
