@@ -1,19 +1,131 @@
 {% extends "main/base.html" %}
 {% block title %}ProductStats{% endblock %}
 {% block content %}
-<h1>{{product.productname}}</h1>
-<img src="{{ product.imglink }}" width="400px">
-<p>Цена в:</p>
-{% for price in prices %}
-<a href="{{ price.link }}">
-    <p>{{price.storeid.storename}} - {{ price.price }}</p>
-</a>
-{% endfor %}
-{% if user.is_authenticated %}
-<form method="POST">
-    {% csrf_token %}
-    <input type="hidden" name="product_number_to_subscribe" value="{{ product.productnumber }}">
-    <input type="submit" value="Абониране за продукта">
-</form>
-{% endif %}
-{% endblock %}
+
+<head>
+    <style>
+        .product {
+            border: 1px solid #dddddd;
+            height: 321px;
+        }
+
+        .product>img {
+            max-width: 230px;
+        }
+
+        .product-title {
+            font-size: 20px;
+        }
+
+        .product-desc {
+            font-size: 14px;
+        }
+
+        .product-price {
+            font-size: 22px;
+        }
+
+        .product-stock {
+            color: #74DF00;
+            font-size: 20px;
+            margin-top: 10px;
+        }
+
+        .product-info {
+            margin-top: 50px;
+        }
+
+        .content-wrapper {
+            max-width: 1140px;
+            background: #fff;
+            margin: 0 auto;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            border: 0px;
+            border-radius: 0px;
+        }
+
+        .container-fluid {
+            max-width: 1140px;
+            margin: 0 auto;
+        }
+
+        .view-wrapper {
+            float: right;
+            max-width: 70%;
+            margin-top: 25px;
+        }
+
+        .container {
+            padding-left: 0px;
+            padding-right: 0px;
+            max-width: 100%;
+        }
+    </style>
+</head>
+
+
+<div class="container-fluid" style="margin-top: 80px;">
+    <div class="content-wrapper">
+        <div class="item-container">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="product col-md-12 service-image-left">
+                            <img id="item-display" src="{{product.imglink}}" alt="Product image"></img>
+                        </div>
+                    </div>
+
+                    <div class="col-md-7">
+                        <div class="product-title">{{product.productname}}</div>
+                        <div class="product-desc">{{product.productnumber}}</div>
+                        <hr>
+                        {% for price in prices %}
+                        <div class="product-title">Магазин - {{price.storeid.storename}}</div>
+                        {% if price.price == None %}
+                        <div class="product-stock">Няма наличност</div>
+                        {% else %}
+                        <div class="product-price">{{price.price}} лв.</div>
+                        <div class="product-stock">В наличност</div>
+                        {% endif %}
+                        <hr>
+                        <div class="btn-group cart">
+                            <button type="button" class="btn btn-success" style="margin: 5px;"
+                                onclick="location.href='{{price.link}}'">
+                                Към магазина
+                            </button>
+
+                        </div>
+                        {% endfor %}
+
+                        {% if user.is_authenticated %}
+                            <br>
+                                {% if isSubscribe == True %}
+                                    <div class="btn-group wishlist" style="margin: 5px;">
+                                        <form method="POST">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="product_number_to_unsubscribe"
+                                                value="{{ product.productnumber }}">
+                                            <input type="submit" value="Отабониране за продукта" class="btn btn-danger">
+                                        </form>
+                                    </div>
+                                {% else %}
+                                    <div class="btn-group wishlist" style="margin: 5px;">
+                                        <form method="POST">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="product_number_to_subscribe"
+                                                value="{{ product.productnumber }}">
+                                            <input type="submit" value="Абониране за продукта" class="btn btn-primary">
+                                        </form>
+                                    </div>
+                                {% endif %}
+                        {% endif %}
+                        {% for message in messages %}
+                        <p id="messages">{{message}}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% endblock %}

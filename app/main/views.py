@@ -33,7 +33,7 @@ def account(request):
 			email = request.POST.get('email')
 			password =request.POST.get('password')
 			deleteAccount = request.POST.get('delete_account')
-			
+
 			user = request.user
 
 			if deleteAccount == 'true':
@@ -51,8 +51,10 @@ def account(request):
 				user.set_password(password)
 			
 			user.save()
+		
+		products = UsersSubscriptions.objects.filter(userid=request.user)
 
-	return render(request, "main/account.html", {})
+	return render(request, "main/account.html", {'products': products})
 
 
 def scraper(request):
@@ -72,8 +74,17 @@ def scraper(request):
 	#Check if product name is not empty
 	if productName != None and productName != '':
 		table = Products.objects.filter(productname__icontains=productName)
-	context = {'table': table}
+		context = {'table': table, 'search': productName}
+	else:
+		context = {'table': table}
+
 	return render(request, "main/scraper.html", context=context)
+
+
+def truncate(n, decimals=0):
+    multiplier = 10 ** decimals
+    return int(n * multiplier) / multiplier
+
 
 def productStats(request):
 		#Get the product name from the url
@@ -94,15 +105,28 @@ def productStats(request):
 		prices.sort(key=lambda x: x.price)
 		#Add link to each store
 		for p in prices:
+			p.price = truncate(p.price, 2)
 			p.link = links.filter(storeid = p.storeid.id)[0].link
 
-		context = {'product': product, 'prices': prices}
+		products = None
+		if request.user.is_authenticated:
+			products = UsersSubscriptions.objects.filter(userid=request.user)
+
+			print(request.user.is_authenticated)
+
+			isSubscribe = False
+
+			for p in products:
+				if p.productId.id == product.id:
+					isSubscribe = True
+		
+		context = {'product': product, 'prices': prices, 'isSubscribe': isSubscribe}
 
 		if request.method == 'POST':
 			productNumber = request.POST.get('product_number_to_subscribe')
 			usersSubscriptions = UsersSubscriptions.objects.create(userid=request.user, productId=product, isAvaible = True, Price = prices[0].price)
 			usersSubscriptions.save()
-			#return redirect('productStats', product_number=productNumber)
+			messages.success(request, 'Абонирахте се за този продукт')
 
 		return render(request, "main/productStats.html", context=context)
 
@@ -114,14 +138,13 @@ def registerPage(request):
 		if request.method == 'POST':
 			form = CreateUserForm(request.POST)
 			if form.is_valid():
-				username = form.cleaned_data.get('username')
-				messages.success(request, 'Account was created for ' + username)
+				messages.success(request, 'Моля, потвърдете вашия акаунт, преди да продължите!')
 
 				user = form.save(commit=False)
 				user.is_active = False
 				user.save()
 				currentSite = get_current_site(request)
-				mailSubject = 'Activate your account.'
+				mailSubject = 'Активация на вашия акаунт.'
 				message = render_to_string('main/verification_email_template.html', context = {
 							'user': user,
                             'domain': currentSite.domain,
@@ -146,9 +169,9 @@ def activate(request, uidb64, token):
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.save()
-        return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
+        return HttpResponse('Благодарим, че си потвърдихте профила. Сега може да влезете в нашия уебсайт.')
     else:
-        return HttpResponse('Activation link is invalid!')
+        return HttpResponse('Активациония линк е невалиден!')
 
 
 def loginPage(request):
@@ -165,7 +188,7 @@ def loginPage(request):
 				login(request, user)
 				return redirect('home')
 			else:
-				messages.info(request, 'Username or password is incorrect')
+				messages.info(request, 'Потребителското име и/или парола не са верни')
 
 		context = {}
 		return render(request, 'main/loginPage.html', context)

@@ -52,8 +52,8 @@ class Stores(models.Model):
 
 class UsersSubscriptions(models.Model):
     id = models.AutoField(db_column='Id', primary_key=True)
-    userid = models.ForeignKey(User, models.DO_NOTHING, db_column='UserId', default="")
-    productId = models.ForeignKey(Products, models.DO_NOTHING, db_column='ProductId', default="")
+    userid = models.ForeignKey(User, models.CASCADE, db_column='UserId', default="")
+    productId = models.ForeignKey(Products, models.CASCADE, db_column='ProductId', default="")
     isAvaible = models.BooleanField(db_column='IsAvaible')
     Price = models.FloatField(db_column='Price', blank=True, null=True)
 
