@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install gcc && apt-get install -y tdsodbc unixodbc
 ADD . /app/src
 WORKDIR /app/src
 # Project initialization:
-RUN poetry config virtualenvs.create false \
-  && poetry install --no-dev
+RUN pip install -r requirements.txt 
 
-CMD ["python3","./crawler_files/crawler_files/startCrawling.py"]
+# Run the app:
+CMD ["python3","./app/manage.py", "runserver"]
