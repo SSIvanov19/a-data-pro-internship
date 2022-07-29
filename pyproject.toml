@@ -6,7 +6,7 @@ authors = ["Stoyan Ivanov <ssivanov19@codingburgas.bg>"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-Scrapy = "^2.5.0"
+Scrapy = "^2.6.2"
 pyodbc = "^4.0.31"
 python-dotenv = "^0.18.0"
 python-logging-loki = "^0.3.1"
