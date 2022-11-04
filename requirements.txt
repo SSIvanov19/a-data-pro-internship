@@ -42,7 +42,7 @@ service-identity==21.1.0; python_version >= "3.6"
 six==1.16.0; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.3.0")
 sqlparse==0.4.1; python_version >= "3.6"
 twisted-iocpsupport==1.0.1; python_full_version >= "3.5.4" and python_version >= "3.6" and platform_system == "Windows"
-twisted==21.2.0; python_full_version >= "3.5.4" and python_version >= "3.6"
+twisted==22.10.0; python_full_version >= "3.5.4" and python_version >= "3.6"
 urllib3==1.26.6; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version < "4" and python_version >= "3.6"
 w3lib==1.22.0; python_version >= "3.6"
 zope.interface==5.4.0; python_full_version >= "3.5.4" and python_version >= "3.6"
